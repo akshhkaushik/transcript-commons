@@ -1,13 +1,8 @@
-import { getTranscript } from "../../../transcript-data";
-
-function timestamp(seconds: number) {
-  const minutes = Math.floor(seconds / 60);
-  const secs = Math.floor(seconds % 60);
-  return `${minutes}:${String(secs).padStart(2, "0")}`;
-}
+import { getTranscript, transcriptWordCount } from "../../../transcript-data";
+import { timestamp } from "../../../transcript-utils";
 
 export async function GET(
-  _request: Request,
+  request: Request,
   { params }: { params: Promise<{ videoId: string }> },
 ) {
   const { videoId } = await params;
@@ -17,12 +12,22 @@ export async function GET(
   const body = `${video.title}
 Channel: ${video.channel}
 Source: ${video.sourceUrl}
+Canonical transcript: ${new URL(request.url).origin}/videos/${video.videoId}
+Published: ${video.publishedAt}
+Language: ${video.language}
+Topics: ${video.topics.join(", ")}
 Transcript source: ${video.transcriptSource}
+Review status: ${video.reviewStatus ?? "unreviewed"}
+Words: ${transcriptWordCount(video)}
 
 ${video.segments.map((segment) => `[${timestamp(segment.start)}] ${segment.text}`).join("\n\n")}
 `;
 
   return new Response(body, {
-    headers: { "content-type": "text/plain; charset=utf-8" },
+    headers: {
+      "content-type": "text/plain; charset=utf-8",
+      "cache-control": "public, max-age=300, s-maxage=86400",
+      "x-robots-tag": "index, follow",
+    },
   });
 }

@@ -1,113 +1,189 @@
 # Transcript Commons
 
 A free, public, agent-readable library of timestamped YouTube transcripts.
+The project turns audiovisual material into an inspectable knowledge layer that
+humans can read and web-searching agents can discover, quote, and cite.
 
-The ingestion pipeline always tries existing captions first. If no English
-captions are available, it downloads audio and transcribes locally with
-MLX Whisper or whisper.cpp. The website publishes the result as server-rendered
-HTML, compact plain text, JSON, and structured metadata.
+The first collection is healthcare-focused. Nothing is gated behind an account,
+subscription, API key, or paid transcription service.
 
-## What the site exposes
+## What is implemented
 
-- `/videos/:videoId` — canonical, readable transcript page
-- `/videos/:videoId/transcript.txt` — compact context for research agents
-- `/videos/:videoId/transcript.json` — complete structured record
-- `/api/transcripts` — machine-readable library index
-- `/llms.txt` — agent discovery and citation guidance
-- `/sitemap.xml` and `/robots.txt` — crawler discovery
+- YouTube search, playlist, and channel discovery with deduplicated URL queues.
+- Creator captions first, automatic captions second, local ASR only when needed.
+- Apple Silicon transcription with MLX Whisper and a whisper.cpp alternative.
+- Rolling-caption deduplication and readable timestamped transcript blocks.
+- Resumable sequential batches with pacing, retries, state, and interruption recovery.
+- Per-record provenance, content hashes, review status, word counts, and quality warnings.
+- Server-rendered public transcript pages with source video, timestamps, topics, and citation guidance.
+- Plain-text and JSON versions of every record.
+- Full-text website search and a machine-readable search endpoint.
+- `robots.txt`, `sitemap.xml`, `llms.txt`, canonical URLs, alternate formats,
+  and `VideoObject` plus `Article` structured data.
+- Explicit crawler access for OAI-SearchBot, ChatGPT-User, Claude Search,
+  Perplexity, and ordinary search engines.
 
-## Local setup
+## Public surfaces
 
-Requirements:
+- `/videos/:videoId` - canonical transcript page
+- `/videos/:videoId/transcript.txt` - compact timestamped context
+- `/videos/:videoId/transcript.json` - complete structured record
+- `/api/transcripts` - library index with absolute URLs
+- `/api/search?q=diabetes` - transcript and metadata search
+- `/transcript-schema.json` - public record schema
+- `/llms.txt` - agent discovery and citation guidance
+- `/sitemap.xml` and `/robots.txt` - crawler discovery
 
-- Node.js 22+
-- `yt-dlp`
-- `ffmpeg`
-- Apple Silicon: `mlx-whisper`
-- Optional alternative: `whisper.cpp`
+## Set up an Apple Silicon Mac
 
-Install the site packages:
+The helper installs `yt-dlp`, `ffmpeg`, and MLX Whisper:
 
 ```bash
+chmod +x scripts/setup_mac.sh
+./scripts/setup_mac.sh
+```
+
+Or install the pieces manually:
+
+```bash
+brew install yt-dlp ffmpeg
+python3 -m venv .venv
+.venv/bin/python -m pip install mlx-whisper
 npm install
 ```
 
-For the recommended Apple Silicon transcription path:
+`yt-dlp` uses YouTube's public web behavior rather than a stable official
+caption API. YouTube can change or rate-limit that behavior. The batch runner is
+sequential by default, records failures, and can be resumed.
+
+## Discover healthcare videos
+
+Search YouTube and create a queue:
 
 ```bash
-python3 -m pip install mlx-whisper
+.venv/bin/python scripts/discover.py \
+  --query "Mayo Clinic diabetes" \
+  --limit 25 \
+  --output queues/mayo-diabetes.txt
 ```
 
-## Add one video
+Expand a playlist or channel:
 
 ```bash
-python3 scripts/ingest.py "https://www.youtube.com/watch?v=VIDEO_ID"
+.venv/bin/python scripts/discover.py \
+  --url "https://www.youtube.com/playlist?list=PLAYLIST_ID" \
+  --limit 100 \
+  --output queues/healthcare-playlist.txt
 ```
 
-This tries creator captions and auto-captions before downloading audio. To
-benchmark or intentionally force local ASR:
+Discovery skips videos already present in `content/transcripts.json`.
+
+## Ingest one video
 
 ```bash
-python3 scripts/ingest.py "https://www.youtube.com/watch?v=VIDEO_ID" --force-local
+.venv/bin/python scripts/ingest.py \
+  "https://www.youtube.com/watch?v=VIDEO_ID"
 ```
 
-Use whisper.cpp instead:
+The pipeline:
+
+1. Reads video metadata and caption availability.
+2. Selects English creator captions when available.
+3. Otherwise selects English automatic captions.
+4. If neither can be retrieved, downloads audio and runs MLX Whisper locally.
+5. Normalizes, validates, hashes, and publishes the transcript record.
+
+Force a local ASR benchmark:
 
 ```bash
-python3 scripts/ingest.py "https://www.youtube.com/watch?v=VIDEO_ID" \
+.venv/bin/python scripts/ingest.py \
+  "https://www.youtube.com/watch?v=VIDEO_ID" \
+  --force-local
+```
+
+Use whisper.cpp:
+
+```bash
+.venv/bin/python scripts/ingest.py \
+  "https://www.youtube.com/watch?v=VIDEO_ID" \
   --engine whisper-cpp \
   --whisper-cpp /path/to/whisper-cli \
   --whisper-cpp-model /path/to/ggml-small.en.bin
 ```
 
-The generated record is stored in `content/transcripts.json`, so it is reviewed
-and versioned with the site.
-
-## Add a batch
-
-Create a text file with one URL per line:
+## Run a resumable weekend batch
 
 ```bash
-python3 scripts/ingest_batch.py healthcare-urls.txt
+caffeinate -i .venv/bin/python scripts/ingest_batch.py \
+  queues/healthcare-starter.txt \
+  --delay 2 \
+  --retries 3
 ```
 
-The runner stays sequential by default and waits one second between videos. Any
-failures are written to `failed-urls.txt` for a later retry.
+Progress is saved after every attempt in `var/ingest-state.json`. Re-running the
+same command skips completed and already-published videos. A network failure,
+caption failure, or interruption does not erase the queue.
 
-## Run the library
+For a long unattended run:
 
 ```bash
-npm run dev
+mkdir -p var
+nohup caffeinate -i .venv/bin/python scripts/ingest_batch.py \
+  queues/healthcare-starter.txt \
+  --delay 2 \
+  --retries 3 \
+  > var/healthcare-batch.log 2>&1 &
 ```
 
-Then open `http://localhost:3000`.
+## Review and validate
 
-For the standard Next.js runtime used by Vercel:
+Healthcare transcripts must be treated as research aids, not medical advice.
+Before marking an automated transcript reviewed, check:
+
+- speaker and organization names;
+- medication names, dosages, lab values, and numerical claims;
+- source URL, language, title, and channel;
+- timestamps around any claim likely to be cited.
+
+Run the complete local verification:
+
+```bash
+npm test
+npm run lint
+npm run build:vercel
+npm run build
+```
+
+## Local website
 
 ```bash
 npm run dev:vercel
 ```
 
-## Deployment
+Open `http://localhost:3000`.
 
-The repository supports two deployment targets:
+The alternate Sites runtime uses:
 
-- Vercel uses `npm run build:vercel` through `vercel.json`.
-- OpenAI Sites uses the default vinext `npm run build` command.
+```bash
+npm run dev
+```
 
-Both targets serve the same public pages and machine-readable transcript
-endpoints. No hosted service performs transcription; ingestion remains a local
-command so audio and model compute stay on the operator's Mac.
+## Publishing model
 
-## Publish safely
+Transcription never runs in a hosted function. It runs on the operator's Mac,
+then writes reviewed, versionable records into `content/transcripts.json`.
+Pushing those records publishes the same public HTML, text, JSON, search index,
+and sitemap on the configured deployments.
 
-Before publishing a transcript, verify:
+Search engines and AI products decide when to crawl and rank a page, so
+publication cannot guarantee immediate discovery. The project supplies the
+technical prerequisites: successful public responses, server-rendered text,
+stable canonical URLs, crawler permissions, sitemaps, structured metadata, and
+direct source attribution.
 
-- the title, channel, source URL, and language;
-- the transcript provenance (`creator-captions`, `auto-captions`, or
-  `local-asr`);
-- medical names, dosages, and numerical claims;
-- the channel's rights and takedown requirements.
+## Rights and corrections
 
-The page should be treated as a research aid, not medical advice. Source video
-rights remain with the respective owner.
+Source video rights remain with the original publisher. Each record links to
+the YouTube source and declares how the transcript was produced. A production
+operator should publish a contact and takedown process, promptly correct
+reported errors, and remove records when required.

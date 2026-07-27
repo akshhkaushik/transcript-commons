@@ -8,7 +8,23 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
       },
       {
+        userAgent: "OAI-SearchBot",
+        allow: "/",
+      },
+      {
+        userAgent: "ChatGPT-User",
+        allow: "/",
+      },
+      {
         userAgent: "GPTBot",
+        allow: "/",
+      },
+      {
+        userAgent: "Claude-SearchBot",
+        allow: "/",
+      },
+      {
+        userAgent: "Claude-User",
         allow: "/",
       },
       {

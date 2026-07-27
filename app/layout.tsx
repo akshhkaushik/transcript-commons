@@ -1,16 +1,9 @@
 import type { Metadata } from "next";
-import { headers } from "next/headers";
 import "./globals.css";
+import { requestOrigin } from "./site-url";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const requestHeaders = await headers();
-  const host = requestHeaders.get("x-forwarded-host") ?? requestHeaders.get("host");
-  const protocol =
-    requestHeaders.get("x-forwarded-proto") ??
-    (host?.includes("localhost") ? "http" : "https");
-  const origin = host
-    ? `${protocol}://${host}`
-    : "https://transcript-commons.sites.openai.com";
+  const origin = await requestOrigin();
 
   return {
     metadataBase: new URL(origin),
@@ -29,6 +22,17 @@ export async function generateMetadata(): Promise<Metadata> {
       "open knowledge",
     ],
     alternates: { canonical: "/" },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-snippet": -1,
+        "max-image-preview": "large",
+        "max-video-preview": -1,
+      },
+    },
     icons: {
       icon: "/favicon.svg",
       shortcut: "/favicon.svg",

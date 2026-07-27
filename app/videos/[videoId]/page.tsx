@@ -1,16 +1,24 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getTranscript, getTranscripts } from "../../transcript-data";
+import {
+  getTranscript,
+  getTranscripts,
+  transcriptWordCount,
+} from "../../transcript-data";
+import { requestOrigin } from "../../site-url";
+import {
+  durationIso,
+  timestamp,
+  youtubeUrlAt,
+} from "../../transcript-utils";
 import "./transcript.css";
 
-function timestamp(seconds: number) {
-  const hours = Math.floor(seconds / 3600);
-  const minutes = Math.floor((seconds % 3600) / 60);
-  const secs = Math.floor(seconds % 60);
-  return hours
-    ? `${hours}:${String(minutes).padStart(2, "0")}:${String(secs).padStart(2, "0")}`
-    : `${minutes}:${String(secs).padStart(2, "0")}`;
+function serializeJsonLd(value: unknown) {
+  return JSON.stringify(value)
+    .replaceAll("<", "\\u003c")
+    .replaceAll("\u2028", "\\u2028")
+    .replaceAll("\u2029", "\\u2029");
 }
 
 export function generateStaticParams() {
@@ -29,11 +37,25 @@ export async function generateMetadata({
   return {
     title: video.title,
     description: `${video.title} by ${video.channel}: full timestamped transcript and source video.`,
-    alternates: { canonical: `/videos/${video.videoId}` },
+    alternates: {
+      canonical: `/videos/${video.videoId}`,
+      types: {
+        "text/plain": `/videos/${video.videoId}/transcript.txt`,
+        "application/json": `/videos/${video.videoId}/transcript.json`,
+      },
+    },
     openGraph: {
       type: "article",
       title: video.title,
       description: `Full timestamped transcript from ${video.channel}.`,
+      images: [
+        {
+          url:
+            video.thumbnailUrl ??
+            `https://i.ytimg.com/vi/${video.videoId}/hqdefault.jpg`,
+          alt: video.title,
+        },
+      ],
     },
   };
 }
@@ -47,29 +69,71 @@ export default async function TranscriptPage({
   const video = getTranscript(videoId);
   if (!video) notFound();
 
+  const origin = await requestOrigin();
+  const canonicalUrl = `${origin}/videos/${video.videoId}`;
   const fullText = video.segments.map((segment) => segment.text).join(" ");
+  const thumbnailUrl =
+    video.thumbnailUrl ??
+    `https://i.ytimg.com/vi/${video.videoId}/hqdefault.jpg`;
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "VideoObject",
-    name: video.title,
-    description: video.description,
-    uploadDate: video.publishedAt,
-    duration: `PT${video.durationSeconds}S`,
-    contentUrl: video.sourceUrl,
-    embedUrl: `https://www.youtube.com/embed/${video.videoId}`,
-    transcript: fullText,
-    author: {
-      "@type": "Organization",
-      name: video.channel,
-      url: video.channelUrl,
-    },
+    "@graph": [
+      {
+        "@type": "VideoObject",
+        "@id": `${canonicalUrl}#video`,
+        name: video.title,
+        description: video.description,
+        thumbnailUrl: [thumbnailUrl],
+        uploadDate: video.publishedAt,
+        duration: durationIso(video.durationSeconds),
+        embedUrl: `https://www.youtube.com/embed/${video.videoId}`,
+        sameAs: video.sourceUrl,
+        inLanguage: video.language,
+        keywords: video.topics,
+        transcript: fullText,
+        author: {
+          "@type": "Organization",
+          name: video.channel,
+          url: video.channelUrl || undefined,
+        },
+        hasPart: video.segments.slice(0, 100).map((segment) => ({
+          "@type": "Clip",
+          name:
+            segment.text.length > 90
+              ? `${segment.text.slice(0, 87).trim()}...`
+              : segment.text,
+          startOffset: Math.floor(segment.start),
+          endOffset: Math.max(
+            Math.ceil(segment.start + segment.duration),
+            Math.floor(segment.start) + 1,
+          ),
+          url: youtubeUrlAt(video.sourceUrl, segment.start),
+        })),
+      },
+      {
+        "@type": "Article",
+        "@id": canonicalUrl,
+        url: canonicalUrl,
+        headline: `${video.title} — timestamped transcript`,
+        description: video.description,
+        articleBody: fullText,
+        datePublished: video.publishedAt || video.ingestedAt,
+        dateModified: video.ingestedAt,
+        inLanguage: video.language,
+        wordCount: transcriptWordCount(video),
+        keywords: video.topics,
+        isAccessibleForFree: true,
+        mainEntity: { "@id": `${canonicalUrl}#video` },
+        isBasedOn: video.sourceUrl,
+      },
+    ],
   };
 
   return (
     <main className="transcript-page">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
       />
       <nav className="site-nav">
         <Link className="wordmark" href="/">
@@ -98,6 +162,15 @@ export default async function TranscriptPage({
           </a>
           <a href={`/videos/${video.videoId}/transcript.json`}>JSON ↗</a>
         </div>
+        <div className="video-frame">
+          <iframe
+            src={`https://www.youtube-nocookie.com/embed/${video.videoId}`}
+            title={`Source video: ${video.title}`}
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+          />
+        </div>
       </header>
 
       <div className="transcript-layout">
@@ -121,6 +194,14 @@ export default async function TranscriptPage({
               <dt>Transcript source</dt>
               <dd>{video.transcriptSource.replaceAll("-", " ")}</dd>
             </div>
+            <div>
+              <dt>Review status</dt>
+              <dd>{video.reviewStatus?.replaceAll("-", " ") ?? "unreviewed"}</dd>
+            </div>
+            <div>
+              <dt>Length</dt>
+              <dd>{transcriptWordCount(video).toLocaleString()} words</dd>
+            </div>
             {video.model ? (
               <div>
                 <dt>ASR model</dt>
@@ -133,6 +214,21 @@ export default async function TranscriptPage({
               <span key={topic}>{topic}</span>
             ))}
           </div>
+          {video.quality?.warnings.length ? (
+            <div className="quality-note">
+              <strong>Quality note</strong>
+              {video.quality.warnings.map((warning) => (
+                <p key={warning}>{warning}</p>
+              ))}
+            </div>
+          ) : null}
+          <div className="citation-note">
+            <strong>Cite this record</strong>
+            <p>
+              {video.channel}. “{video.title}.” <i>Transcript Commons</i>.
+              Timestamped transcript of the linked YouTube source.
+            </p>
+          </div>
         </aside>
 
         <article className="transcript-body">
@@ -144,7 +240,7 @@ export default async function TranscriptPage({
             <section className="segment" id={`t-${Math.floor(segment.start)}`} key={segment.start}>
               <a
                 className="timestamp"
-                href={`${video.sourceUrl}&t=${Math.floor(segment.start)}s`}
+                href={youtubeUrlAt(video.sourceUrl, segment.start)}
                 aria-label={`Open source video at ${timestamp(segment.start)}`}
               >
                 {timestamp(segment.start)}
