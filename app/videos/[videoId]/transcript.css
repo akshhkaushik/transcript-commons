@@ -1,0 +1,144 @@
+.back-link {
+  font-size: 0.66rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+}
+
+.transcript-header {
+  padding: 80px 13vw 72px;
+  border-bottom: 1px solid var(--ink);
+}
+
+.transcript-header h1 {
+  max-width: 1180px;
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(3.2rem, 7vw, 7.4rem);
+  line-height: 0.94;
+  letter-spacing: -0.055em;
+  font-weight: 400;
+}
+
+.transcript-deck {
+  max-width: 780px;
+  margin: 36px 0;
+  color: var(--muted);
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.source-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.source-actions a {
+  padding: 13px 16px;
+  border: 1px solid var(--ink);
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+}
+
+.source-actions a:first-child {
+  background: var(--red);
+  color: white;
+}
+
+.transcript-layout {
+  display: grid;
+  grid-template-columns: minmax(250px, 0.34fr) minmax(0, 1fr);
+}
+
+.transcript-layout aside {
+  padding: 46px 4vw;
+  border-right: 1px solid var(--ink);
+}
+
+.transcript-layout dl {
+  margin: 0 0 34px;
+}
+
+.transcript-layout dl div {
+  padding: 15px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.transcript-layout dt {
+  margin-bottom: 6px;
+  color: var(--muted);
+  font-size: 0.61rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.transcript-layout dd {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  text-transform: capitalize;
+}
+
+.transcript-body {
+  padding: 46px 7vw 100px;
+}
+
+.transcript-label {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 18px;
+  border-bottom: 2px solid var(--ink);
+  font-size: 0.65rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+}
+
+.segment {
+  display: grid;
+  grid-template-columns: 75px 1fr;
+  gap: 20px;
+  padding: 25px 0;
+  border-bottom: 1px solid var(--line);
+  scroll-margin-top: 20px;
+}
+
+.timestamp {
+  width: fit-content;
+  height: fit-content;
+  padding: 6px 8px;
+  background: var(--sage);
+  font: 700 0.72rem/1 monospace;
+}
+
+.segment p {
+  max-width: 860px;
+  margin: -4px 0 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.12rem, 1.8vw, 1.45rem);
+  line-height: 1.6;
+}
+
+@media (max-width: 760px) {
+  .transcript-header {
+    padding: 64px 5vw;
+  }
+
+  .transcript-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .transcript-layout aside {
+    border-right: 0;
+    border-bottom: 1px solid var(--ink);
+  }
+
+  .transcript-body {
+    padding: 46px 5vw 80px;
+  }
+
+  .segment {
+    grid-template-columns: 58px 1fr;
+    gap: 12px;
+  }
+}
