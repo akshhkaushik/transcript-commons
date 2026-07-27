@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { CANONICAL_SITE_ORIGIN } from "./site-url";
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -36,6 +37,7 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
       },
     ],
-    sitemap: "/sitemap.xml",
+    sitemap: `${CANONICAL_SITE_ORIGIN}/sitemap.xml`,
+    host: CANONICAL_SITE_ORIGIN,
   };
 }

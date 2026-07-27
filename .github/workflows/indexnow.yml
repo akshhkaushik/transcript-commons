@@ -1,0 +1,27 @@
+name: Notify search engines
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "content/transcripts.json"
+      - "app/**"
+      - "public/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: transcript-commons-indexnow
+  cancel-in-progress: true
+
+jobs:
+  submit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Notify IndexNow participants
+        run: python3 scripts/submit_indexnow.py --submit

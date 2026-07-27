@@ -123,6 +123,14 @@ export default async function TranscriptPage({
         wordCount: transcriptWordCount(video),
         keywords: video.topics,
         isAccessibleForFree: true,
+        ...(video.reviewedBy
+          ? {
+              reviewedBy: {
+                "@type": "Organization",
+                name: video.reviewedBy,
+              },
+            }
+          : {}),
         mainEntity: { "@id": `${canonicalUrl}#video` },
         isBasedOn: video.sourceUrl,
       },
@@ -161,6 +169,9 @@ export default async function TranscriptPage({
             PLAIN TEXT ↗
           </a>
           <a href={`/videos/${video.videoId}/transcript.json`}>JSON ↗</a>
+          <a href={`/data/transcripts/${video.videoId}.json`}>
+            STATIC JSON ↗
+          </a>
         </div>
         <div className="video-frame">
           <iframe
@@ -198,6 +209,18 @@ export default async function TranscriptPage({
               <dt>Review status</dt>
               <dd>{video.reviewStatus?.replaceAll("-", " ") ?? "unreviewed"}</dd>
             </div>
+            {video.reviewedBy ? (
+              <div>
+                <dt>Reviewed by</dt>
+                <dd>{video.reviewedBy}</dd>
+              </div>
+            ) : null}
+            {video.reviewedAt ? (
+              <div>
+                <dt>Reviewed</dt>
+                <dd>{new Date(video.reviewedAt).toISOString().slice(0, 10)}</dd>
+              </div>
+            ) : null}
             <div>
               <dt>Length</dt>
               <dd>{transcriptWordCount(video).toLocaleString()} words</dd>
@@ -227,6 +250,16 @@ export default async function TranscriptPage({
             <p>
               {video.channel}. “{video.title}.” <i>Transcript Commons</i>.
               Timestamped transcript of the linked YouTube source.
+            </p>
+          </div>
+          <div className="citation-note">
+            <strong>Found an error?</strong>
+            <p>
+              Read the{" "}
+              <Link className="text-link" href="/policies">
+                corrections and rights policy
+              </Link>{" "}
+              to report it.
             </p>
           </div>
         </aside>
@@ -259,7 +292,7 @@ export default async function TranscriptPage({
           <span>TRANSCRIPT COMMONS</span>
         </Link>
         <p>Source video rights remain with their respective owners.</p>
-        <p>Open text for better research.</p>
+        <Link href="/policies">Corrections and rights →</Link>
       </footer>
     </main>
   );

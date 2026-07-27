@@ -42,6 +42,9 @@ export type TranscriptRecord = {
   model?: string;
   ingestedAt: string;
   reviewStatus?: "source-captions" | "automated-unreviewed" | "reviewed";
+  reviewedAt?: string;
+  reviewedBy?: string;
+  reviewNotes?: string;
   quality?: TranscriptQuality;
   provenance?: TranscriptProvenance;
   rightsNote?: string;

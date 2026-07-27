@@ -23,50 +23,974 @@
     ],
     "transcriptSource": "local-asr",
     "captionLanguage": null,
-    "ingestedAt": "2026-07-27T18:02:09.065590+00:00",
-    "reviewStatus": "automated-unreviewed",
+    "ingestedAt": "2026-07-27T18:59:50.624716+00:00",
+    "reviewStatus": "reviewed",
     "quality": {
       "segmentCount": 4,
-      "wordCount": 153,
+      "wordCount": 159,
+      "warnings": []
+    },
+    "provenance": {
+      "pipelineVersion": "1.1.0",
+      "fetchedAt": "2026-07-27T18:59:50.624716+00:00",
+      "method": "local-asr",
+      "captionLanguage": null,
+      "engine": "mlx",
+      "model": "mlx-community/whisper-small-mlx",
+      "contentSha256": "21be4c41a342429936b827804f0889e40ecfe89b036b42224185a8e85c5d5526",
+      "metadataSeconds": 1.433,
+      "processingSeconds": 181.299
+    },
+    "rightsNote": "Transcript provided for search and research with attribution to the source video. Source media rights remain with the original publisher.",
+    "segments": [
+      {
+        "start": 0.0,
+        "duration": 15.0,
+        "text": "Type 2 diabetes is on the rise. The increased incidence of obesity is what has probably driven part of the increase in diabetes. Mayo Clinic endocrinologist Dr. Adrian Vella says diabetes happens when your blood sugar is too high."
+      },
+      {
+        "start": 15.0,
+        "duration": 15.0,
+        "text": "It's a leading cause of blindness and amputations, and it increases your risk of heart disease and kidney failure. Dealing with high blood sugars early gives you a better chance of spending a longer time not requiring medications or other interventions to control your diabetes."
+      },
+      {
+        "start": 30.0,
+        "duration": 13.0,
+        "text": "Some people develop type 2 diabetes even if they're not overweight. But for others, lifestyle choices such as eating right, exercising and losing weight can help prevent and even manage the chronic condition."
+      },
+      {
+        "start": 43.0,
+        "duration": 16.0,
+        "text": "But unhealthy choices can be dangerous, especially if you have a predisposition for the disease. Heredity loads the gun while the environment pulls the trigger. But you can control diabetes with proper treatment. For the Mayo Clinic News Network, I'm Vivien Williams."
+      }
+    ],
+    "model": "mlx-community/whisper-small-mlx",
+    "reviewedAt": "2026-07-27T19:04:58.677859+00:00",
+    "reviewedBy": "Transcript Commons editorial review",
+    "reviewNotes": "Compared the full one-minute transcript against Mayo Clinic News Network’s official published script: https://newsnetwork.mayoclinic.org/discussion/mayo-clinic-minute-type-2-diabetes-what-you-need-to-know/"
+  },
+  {
+    "schemaVersion": 1,
+    "videoId": "lGPbOQ_vudk",
+    "title": "Mayo Clinic Diabetes Diet Book",
+    "channel": "Mayo Clinic",
+    "channelUrl": "https://www.youtube.com/channel/UC8fQzKHIhSoZeSq3bwQx4mw",
+    "sourceUrl": "https://www.youtube.com/watch?v=lGPbOQ_vudk",
+    "thumbnailUrl": "https://i.ytimg.com/vi/lGPbOQ_vudk/maxresdefault.jpg",
+    "description": "The incidence of Type Two Diabetes has doubled in the U.S. over the past decade. Excess weight suppresses the body's ability to use insulin. So, the best chance to slow the trend is to get more Americans serious about losing weight. \r",
+    "publishedAt": "2011-11-04",
+    "durationSeconds": 105,
+    "language": "en",
+    "topics": [
+      "Diabetes",
+      "Nutrition",
+      "Science & Technology",
+      "Mayo Clinic Diabetes Diet Book",
+      "Donald Hensrud",
+      "Maria Collazo Clavel"
+    ],
+    "transcriptSource": "auto-captions",
+    "captionLanguage": "en",
+    "ingestedAt": "2026-07-27T18:54:39.468449+00:00",
+    "reviewStatus": "automated-unreviewed",
+    "quality": {
+      "segmentCount": 7,
+      "wordCount": 314,
       "warnings": [
         "Automated transcript; verify medical names, dosages, and numbers."
       ]
     },
     "provenance": {
       "pipelineVersion": "1.0.0",
-      "fetchedAt": "2026-07-27T18:02:09.065590+00:00",
-      "method": "local-asr",
-      "captionLanguage": null,
-      "engine": "mlx",
-      "model": "mlx-community/whisper-tiny-mlx",
-      "contentSha256": "714f5c9cfccaff20aab93fe2bc4b240faf259d9a2968edc63b939324365766cf",
-      "metadataSeconds": 1.626,
-      "processingSeconds": 37.157
+      "fetchedAt": "2026-07-27T18:54:39.468449+00:00",
+      "method": "auto-captions",
+      "captionLanguage": "en",
+      "engine": null,
+      "model": null,
+      "contentSha256": "429e5cc3bc22d2e196cf181a0e85c3a19855a81698637a1c702fcae8573476a1",
+      "metadataSeconds": 1.542,
+      "processingSeconds": 1.532
+    },
+    "rightsNote": "Transcript provided for search and research with attribution to the source video. Source media rights remain with the original publisher.",
+    "segments": [
+      {
+        "start": 0.399,
+        "duration": 17.72,
+        "text": "weight loss will improve glucose control it will help diabetes better than any other lifestyle treatment as chair of preventative medicine at Mayo Clinic Dr Donald hensrud wrote the book literally it's called the Mayo Clinic diabetes diet he had a lot of help for Mayo's top"
+      },
+      {
+        "start": 16.4,
+        "duration": 15.8,
+        "text": "weight loss experts in a variety of fields what they agree on is not a secret eat less exercise more but they accomplish it with a onew punch called lose it and live it Dr hens says seeing results the first two weeks empowered"
+      },
+      {
+        "start": 30.16,
+        "duration": 16.919,
+        "text": "people to make changes that will last a lifetime the changes may seem simple eat breakfast more fruits and vegetables controlling portions things like being aware a 20 o T-Bone is actually five servings of protein not one Dr hens says"
+      },
+      {
+        "start": 45.12,
+        "duration": 17.84,
+        "text": "the diabetes diet should not make people feel restricted about what they can eat but should help them enjoy more of their favorite foods for example he says many people with diabetes stop eating fruit afraid it may contain too much sugar in actual fact we don't restrict any food"
+      },
+      {
+        "start": 60.8,
+        "duration": 16.56,
+        "text": "but we do watch the portion size of certain foods even with fruit it's very high in water and fiber and has many other beneficial nutrients and it's only 60 calories in a small to medium piece of fruit the growing obesity epidemic"
+      },
+      {
+        "start": 75.36,
+        "duration": 17.28,
+        "text": "has led to a soaring increase in diabetes even among the young but the book points out how healthy changes by a parent have an impact for Generations I often hear from people you know I have diabetes I want to try to protect my children whatever you do for yourself"
+      },
+      {
+        "start": 90.92,
+        "duration": 15.44,
+        "text": "when it comes to healthier eating or physical activity your children will benefit if they follow uh if they follow that example and now you can set that example by the book from Mayo Clinic I'm Dennis sta"
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "videoId": "ooh0uTZ-tI4",
+    "title": "Mayo Clinic Minute: Overtesting Type 2 Diabetes Patients",
+    "channel": "Mayo Clinic",
+    "channelUrl": "https://www.youtube.com/channel/UC8fQzKHIhSoZeSq3bwQx4mw",
+    "sourceUrl": "https://www.youtube.com/watch?v=ooh0uTZ-tI4",
+    "thumbnailUrl": "https://i.ytimg.com/vi/ooh0uTZ-tI4/maxresdefault.jpg",
+    "description": "Vivien Williams has this Mayo Clinic Minute",
+    "publishedAt": "2015-12-08",
+    "durationSeconds": 56,
+    "language": "en",
+    "topics": [
+      "Diabetes",
+      "Science & Technology",
+      "Mayo Clinic (Hospital)",
+      "Health Care (Issue)",
+      "Healthcare Science (Field Of Study)",
+      "Type 2 Diabetes",
+      "Mayo Clinic Minute",
+      "Vivien Williams"
+    ],
+    "transcriptSource": "auto-captions",
+    "captionLanguage": "en",
+    "ingestedAt": "2026-07-27T18:54:34.308552+00:00",
+    "reviewStatus": "automated-unreviewed",
+    "quality": {
+      "segmentCount": 4,
+      "wordCount": 151,
+      "warnings": [
+        "Automated transcript; verify medical names, dosages, and numbers."
+      ]
+    },
+    "provenance": {
+      "pipelineVersion": "1.0.0",
+      "fetchedAt": "2026-07-27T18:54:34.308552+00:00",
+      "method": "auto-captions",
+      "captionLanguage": "en",
+      "engine": null,
+      "model": null,
+      "contentSha256": "2bfd4a4b461fe4d8d0cbfa9147a8af4ed901a1a30024f25706a081fc213eb2e5",
+      "metadataSeconds": 1.235,
+      "processingSeconds": 2.487
+    },
+    "rightsNote": "Transcript provided for search and research with attribution to the source video. Source media rights remain with the original publisher.",
+    "segments": [
+      {
+        "start": 1.12,
+        "duration": 16.4,
+        "text": "Have you heard the saying less is more? Well, a new Mayo Clinic study found that may be true when it comes to a certain blood test for adults with type 2 diabetes. Experts say the HBA1C test checks levels of glycated hemoglobin in"
+      },
+      {
+        "start": 15.599,
+        "duration": 16.0,
+        "text": "your blood and some patients are tested too often. We found that patients who are overtested are more likely to be overtreated despite their baseline good glycemic control. Mayo Clinic Dr. Dr. Rosalina McCoy says unlike home blood"
+      },
+      {
+        "start": 30.08,
+        "duration": 16.4,
+        "text": "sugar monitoring that patients on insulin do every day, the HBA1C tests blood sugar levels over three months. So patients who are not on insulin and have good blood sugar control only need to be tested once or twice a year instead of"
+      },
+      {
+        "start": 43.76,
+        "duration": 13.2,
+        "text": "more frequently. This prevents waste, saves time and money, and prevents unnecessary treatments. For more health news, visit the Mayo Clinic News Network. I'm Vivian Williams."
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "videoId": "CwxStExoyGA",
+    "title": "Ask Mayo Clinic: Diabetes",
+    "channel": "Mayo Clinic",
+    "channelUrl": "https://www.youtube.com/channel/UC8fQzKHIhSoZeSq3bwQx4mw",
+    "sourceUrl": "https://www.youtube.com/watch?v=CwxStExoyGA",
+    "thumbnailUrl": "https://i.ytimg.com/vi/CwxStExoyGA/maxresdefault.jpg",
+    "description": "Type 1 diabetes is complicated. It’s okay to have questions.  Get informed: https://mayocl.in/3MUSKkr.  If you or someone you know has been diagnosed with diabetes, you may be asking yourself a lot of questions. Our experts are here to help you answer them.",
+    "publishedAt": "2022-06-16",
+    "durationSeconds": 276,
+    "language": "en",
+    "topics": [
+      "Diabetes",
+      "Public Health",
+      "Science & Technology",
+      "diabetes research",
+      "diabetic",
+      "endocrinology",
+      "insulin",
+      "insulin injection"
+    ],
+    "transcriptSource": "creator-captions",
+    "captionLanguage": "en-eEY6OEpapPo",
+    "ingestedAt": "2026-07-27T18:54:28.501529+00:00",
+    "reviewStatus": "source-captions",
+    "quality": {
+      "segmentCount": 17,
+      "wordCount": 517,
+      "warnings": []
+    },
+    "provenance": {
+      "pipelineVersion": "1.0.0",
+      "fetchedAt": "2026-07-27T18:54:28.501529+00:00",
+      "method": "creator-captions",
+      "captionLanguage": "en-eEY6OEpapPo",
+      "engine": null,
+      "model": null,
+      "contentSha256": "60339c36109a381169207aedbcb28e172cef61df832852b8a1ae8b53c676f3c1",
+      "metadataSeconds": 1.625,
+      "processingSeconds": 1.476
+    },
+    "rightsNote": "Transcript provided for search and research with attribution to the source video. Source media rights remain with the original publisher.",
+    "segments": [
+      {
+        "start": 6.14,
+        "duration": 11.63,
+        "text": ">> [MUSIC] Hi, I'm Dr. Yogish C Kudva. I'm an endocrinologist at Mayo Clinic and I'm here to answer some of the important questions you may have about type one diabetes."
+      },
+      {
+        "start": 23.0,
+        "duration": 17.94,
+        "text": "The best current treatment for type one diabetes is an automated insulin delivery system. This system includes a continuous glucose monitor, insulin pump, and a computer algorithm that continually adjust insulin responding to"
+      },
+      {
+        "start": 40.94,
+        "duration": 11.19,
+        "text": "the continuous glucose monitoring signal. The patient still has to enter information about the amount of carbohydrate he or she eats at mealtimes provide"
+      },
+      {
+        "start": 52.13,
+        "duration": 15.675,
+        "text": "the meal time time-related insulin [MUSIC]. Testing using a glucose meter is not enough because glucose measurements in people with type one diabetes,"
+      },
+      {
+        "start": 67.805,
+        "duration": 15.505,
+        "text": "wary from normal to low and normal to high very rapidly in the course of a day, a continuous glucose monitor is needed to assess whether treatment is effective and also to determine how to improve treatment."
+      },
+      {
+        "start": 88.69,
+        "duration": 17.29,
+        "text": "Current guidelines recommend use of a continuous glucose monitor. The percentage of time that is spent daily with glucose between 70 and 180 milligram per deciliter is the main measurement of appropriate treatment. This percentage should be"
+      },
+      {
+        "start": 105.98,
+        "duration": 17.19,
+        "text": "70% or higher daily. In addition, percentage of time spent with glucose below 70 should be less than four percent and greater than 250 should be less than five percent. Clearly, hemoglobin A1C testing to evaluate adequacy"
+      },
+      {
+        "start": 123.17,
+        "duration": 2.23,
+        "text": "of treatment is not enough."
+      },
+      {
+        "start": 130.66,
+        "duration": 16.645,
+        "text": "In certain people with type one diabetes transplantation can be undertaken. This could be pancreas transplantation or transplantation of insulin making cells called islet. Islet transplantation is considered research in the US."
+      },
+      {
+        "start": 147.305,
+        "duration": 17.355,
+        "text": "Pancreas transplantation is available as a clinical treatment. These patients with hypoglycemia unawareness may benefit from a pancreas transplant. People with type one diabetes who develop recurrent diabetic ketoacidosis may also benefit from a pancreas transplant."
+      },
+      {
+        "start": 164.66,
+        "duration": 10.25,
+        "text": "People with type one diabetes who have developed kidney failure, could have their lives transformed by transplantation of both the pancreas and the kidney."
+      },
+      {
+        "start": 179.57,
+        "duration": 16.8,
+        "text": "There is active research going on to prevent type one diabetes from happening in children and adults who are less than 45 years old. People who are eligible for such research studies are people who have a positive antibody test for type one diabetes and"
+      },
+      {
+        "start": 196.37,
+        "duration": 16.71,
+        "text": "are willing to be in such studies. The treatment being tested is medication that suppresses the immune system. Willing participants would be randomized to receive immune suppressive treatment or placebo treatment. Placebo looks like the medication,"
+      },
+      {
+        "start": 213.08,
+        "duration": 17.15,
+        "text": "but does not do the same thing in the body. Initial research studies have been successful in decreasing the risk of development of type one diabetes in people that have received the immune system suppressing treatment and therefore, larger studies are now being underpaid."
+      },
+      {
+        "start": 230.23,
+        "duration": 17.845,
+        "text": "[MUSIC] Try to be informed about research going on and treatments that may be approved for type one diabetes. You can get this information through already available publications."
+      },
+      {
+        "start": 248.075,
+        "duration": 17.185,
+        "text": "Make sure that at least annually you see a physician who is an expert on your disorder. Never hesitate to ask your medical team any questions or concerns you have. Being informed makes all the difference. Thanks for your time and we wish well"
+      },
+      {
+        "start": 265.26,
+        "duration": 11.29,
+        "text": "[MUSIC]."
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "videoId": "vGjOxWweQ0g",
+    "title": "Mayo Clinic Explains Insulin Resistance",
+    "channel": "Mayo Clinic",
+    "channelUrl": "https://www.youtube.com/channel/UC8fQzKHIhSoZeSq3bwQx4mw",
+    "sourceUrl": "https://www.youtube.com/watch?v=vGjOxWweQ0g",
+    "thumbnailUrl": "https://i.ytimg.com/vi/vGjOxWweQ0g/maxresdefault.jpg",
+    "description": "Learning about insulin resistance, or prediabetes, can be intimidating. Eleanna De Filippis, M.D., Ph.D., an endocrinologist at Mayo Clinic, walks you through the facts, the questions, and the answers to help you better understand this condition.  For more reading visit: https://mayocl.in/3waShVV.  When it comes to your health, Mayo Clinic believes credible and clear information is paramount. There’s a lot to learn about insulin resistance. We’re here to help.",
+    "publishedAt": "2022-08-17",
+    "durationSeconds": 355,
+    "language": "en",
+    "topics": [
+      "Diabetes",
+      "Science & Technology",
+      "dr. de filippis",
+      "eleanna de filippis",
+      "endocrinology",
+      "glucose",
+      "insulin",
+      "insulin resistance"
+    ],
+    "transcriptSource": "creator-captions",
+    "captionLanguage": "en-eEY6OEpapPo",
+    "ingestedAt": "2026-07-27T18:54:23.313553+00:00",
+    "reviewStatus": "source-captions",
+    "quality": {
+      "segmentCount": 22,
+      "wordCount": 626,
+      "warnings": []
+    },
+    "provenance": {
+      "pipelineVersion": "1.0.0",
+      "fetchedAt": "2026-07-27T18:54:23.313553+00:00",
+      "method": "creator-captions",
+      "captionLanguage": "en-eEY6OEpapPo",
+      "engine": null,
+      "model": null,
+      "contentSha256": "5e240d2592e25347d2d8e44a61b69eeed8eb96a59c2adf5c734c0c7fff740910",
+      "metadataSeconds": 2.908,
+      "processingSeconds": 1.397
+    },
+    "rightsNote": "Transcript provided for search and research with attribution to the source video. Source media rights remain with the original publisher.",
+    "segments": [
+      {
+        "start": 16.85,
+        "duration": 16.32,
+        "text": "Hello. I'm Dr. Eleanna De Filippis, an endocrinologist at Mayo Clinic. In this video, we'll cover the basics of insulin resistance. What is it? Who gets it? The symptoms, diagnosis and treatment."
+      },
+      {
+        "start": 33.17,
+        "duration": 17.205,
+        "text": "Whether you're looking for answers for yourself or someone you love, we're here to give you the best information available. To understand insulin resistance, often referred to as prediabetes, let's first talk about what insulin does."
+      },
+      {
+        "start": 50.375,
+        "duration": 17.955,
+        "text": "When you eat food, your body converts that food into dietary sugars. Insulin is a hormone released by the pancreas that tells your cells to open up to that sugar and convert it into energy. With insulin resistance, the cells don't react,"
+      },
+      {
+        "start": 68.33,
+        "duration": 16.695,
+        "text": "and don't open up, resulting in excessive sugar in the blood. Over time, the pancreas keeps trying to regulate the blood sugar, producing more and more insulin until it wears out and can't produce large amounts of insulin anymore."
+      },
+      {
+        "start": 85.025,
+        "duration": 7.015,
+        "text": "As a result, blood sugar levels increase to the point of being in the diabetic range."
+      },
+      {
+        "start": 95.11,
+        "duration": 15.46,
+        "text": "Who gets it? Anyone can become insulin-resistant. In particular, people with excess weight are at a higher risk, compared to the general population. Risk is further increased with a family history of type two diabetes,"
+      },
+      {
+        "start": 110.57,
+        "duration": 15.675,
+        "text": "age over 45, African, Latino or Native American ancestry, smoking, and certain medications, including steroids, anti-psychotics, and HIV medication. There are other medical conditions"
+      },
+      {
+        "start": 126.245,
+        "duration": 16.905,
+        "text": "associated with insulin resistance, like obstructive sleep apnea, fatty liver disease, polycystic ovarian syndrome, also known as PCOS, Cushing's syndrome, and lipodystrophy syndromes."
+      },
+      {
+        "start": 143.15,
+        "duration": 15.19,
+        "text": "Lipodystrophy syndromes are conditions that cause abnormal fat loss. So carrying either too much or not enough fat tissue in your body can be associated with insulin resistance."
+      },
+      {
+        "start": 161.32,
+        "duration": 15.91,
+        "text": "What are the symptoms? Very often people with insulin resistance don't have any symptoms at all. It is usually picked up by their doctor during an annual health exam or routine blood work. There are some signs of insulin resistance that"
+      },
+      {
+        "start": 177.23,
+        "duration": 17.415,
+        "text": "your doctor may look for. These includes a waistline over 40 inches in men, and a waistline over 35 inches in women. Skin tags or patches of dark velvety skin"
+      },
+      {
+        "start": 194.645,
+        "duration": 14.685,
+        "text": "called acanthosis nigricans. A blood pressure reading of 130 over 80 or higher. A fasting glucose level equal or above 100 milligrams per deciliter."
+      },
+      {
+        "start": 209.33,
+        "duration": 15.705,
+        "text": "Or a blood sugar level equal or above 140 milligrams per deciliter two hours after a glucose load test. An A1C between 5.7 and 6.3%."
+      },
+      {
+        "start": 225.035,
+        "duration": 14.25,
+        "text": "A fasting triglycerides level over 150 milligram per deciliter. And an HDL cholesterol level under 40 milligrams per deciliter in men, and an HDL cholesterol level"
+      },
+      {
+        "start": 239.285,
+        "duration": 4.255,
+        "text": "under 50 milligrams per deciliter in women."
+      },
+      {
+        "start": 247.06,
+        "duration": 15.865,
+        "text": "How is it diagnosed? If your doctor spots these symptoms, they may follow up with a physical exam and a variety of blood tests that measure the levels of glucose, or sugar, in your blood and/or your tolerance to that glucose."
+      },
+      {
+        "start": 262.925,
+        "duration": 10.765,
+        "text": "Or more recently, a blood test called hemoglobin glycosylated A1C, often simply referred to as A1C."
+      },
+      {
+        "start": 276.85,
+        "duration": 16.03,
+        "text": "How is it treated? Reversing insulin resistance and preventing type two diabetes is possible through lifestyle changes, medication, or sometimes both. Healthy bodies come in different shapes and sizes. Losing weight through drastic means"
+      },
+      {
+        "start": 292.88,
+        "duration": 17.775,
+        "text": "can be dangerous and counterproductive. Instead, get ideas from a doctor or a nutritionist about ways to incorporate healthy foods like fruits, vegetables, nuts, beans, and lean proteins into your meals."
+      },
+      {
+        "start": 310.655,
+        "duration": 8.905,
+        "text": "Also, consider incorporating exercise and movement into your day-to-day life in ways that make you feel good."
+      },
+      {
+        "start": 322.51,
+        "duration": 17.605,
+        "text": "What now? Even though permanently defeating insulin resistance isn't always possible, you can help your body to be more receptive to insulin. Listen to your body, reduce stress, give it the nutrition and activity it desires."
+      },
+      {
+        "start": 340.115,
+        "duration": 11.875,
+        "text": "If you'd like to learn even more about insulin resistance, watch our other related videos or visit Mayo Clinic.org. We wish you well."
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "videoId": "aeMebjz7knM",
+    "title": "Diabetes guidelines: Mayo Clinic Radio",
+    "channel": "Mayo Clinic",
+    "channelUrl": "https://www.youtube.com/channel/UC8fQzKHIhSoZeSq3bwQx4mw",
+    "sourceUrl": "https://www.youtube.com/watch?v=aeMebjz7knM",
+    "thumbnailUrl": "https://i.ytimg.com/vi/aeMebjz7knM/maxresdefault.jpg",
+    "description": "Dr. Adrian Vella, an endocrinologist at Mayo Clinic, explains A1C guidelines for diabetes. This interview originally aired April 21, 2018.",
+    "publishedAt": "2018-04-22",
+    "durationSeconds": 546,
+    "language": "en",
+    "topics": [
+      "Diabetes",
+      "Science & Technology",
+      "Mayo Clinic",
+      "Health Care (Issue)",
+      "Healthcare Science (Field Of Study)",
+      "A1C guidelines",
+      "Dr. Adrian Vella",
+      "Mayo Clinic Radio"
+    ],
+    "transcriptSource": "auto-captions",
+    "captionLanguage": "en",
+    "ingestedAt": "2026-07-27T18:54:16.921731+00:00",
+    "reviewStatus": "automated-unreviewed",
+    "quality": {
+      "segmentCount": 39,
+      "wordCount": 1347,
+      "warnings": [
+        "Automated transcript; verify medical names, dosages, and numbers."
+      ]
+    },
+    "provenance": {
+      "pipelineVersion": "1.0.0",
+      "fetchedAt": "2026-07-27T18:54:16.921731+00:00",
+      "method": "auto-captions",
+      "captionLanguage": "en",
+      "engine": null,
+      "model": null,
+      "contentSha256": "1aee0d4c11b3e21c8be7d43187c555d0e64610c5cde8b3dd8cf8f206c748904a",
+      "metadataSeconds": 1.357,
+      "processingSeconds": 2.756
+    },
+    "rightsNote": "Transcript provided for search and research with attribution to the source video. Source media rights remain with the original publisher.",
+    "segments": [
+      {
+        "start": 2.54,
+        "duration": 17.489,
+        "text": "welcome back to Mayo Clinic radio I'm dr. Tom Shive and I'm Tracy McRae Tracy recently the American College of Physicians the ACP as it's known reviewed the guidelines for treating patients with type 2 diabetes and provided its own recommendations then"
+      },
+      {
+        "start": 18.71,
+        "duration": 15.84,
+        "text": "they were published in the annals of internal medicine the ACP is now recommending that patients should aim to have a1c levels between seven and eight percent now a1c is a measure of your"
+      },
+      {
+        "start": 31.96,
+        "duration": 16.18,
+        "text": "average blood sugar levels over the past two to three months but medical groups that specialize in diabetes treatment including the American Diabetes Association strongly disagree with the ACPs less stringent blood sugar goals and"
+      },
+      {
+        "start": 46.43,
+        "duration": 17.67,
+        "text": "stand by their current guidelines recommending an a1c level below seven percent this all adds up to a lot of confusion for diabetes patients here to discuss those recommendations and comment on the controversy is Mayo Clinic endocrinologist dr. Adrienne Villa welcome to the program dr. Vela"
+      },
+      {
+        "start": 62.6,
+        "duration": 17.82,
+        "text": "thank you for having me it's a pleasure to be here dr. Bailey great to see you great to have you on the program especially to discuss this subject you know we've had some controversy about blood blood pressure guidelines and they've been changing we've had some controversy about when women are to start giving"
+      },
+      {
+        "start": 78.14,
+        "duration": 17.04,
+        "text": "getting their mammograms at what age and now we've got some controversy over what the ideal blood sugar level is and diabetics ought to keep their blood sugar at what level get doctors can't agree on anything well I always say that"
+      },
+      {
+        "start": 92.63,
+        "duration": 16.89,
+        "text": "guidelines serve mainly the purpose of the people who write them so you have to keep that in mind sometimes but joking aside I think guidelines apply should be applied to perhaps 90% of our prayer our"
+      },
+      {
+        "start": 107.09,
+        "duration": 13.98,
+        "text": "practice but we always have to recognize that there are individual patients for whom exceptions should be made as you mentioned the a1c is a running average"
+      },
+      {
+        "start": 118.7,
+        "duration": 17.23,
+        "text": "of your blood Sugar's over the previous three months and it's a measure which correlates best with outcomes so with diabetes we we are worried about complications affecting the vascular"
+      },
+      {
+        "start": 135.439,
+        "duration": 15.851,
+        "text": "system so there are macro vascular complications which affect large vessels and which are associated with heart attacks for example or stroke the a1c"
+      },
+      {
+        "start": 148.26,
+        "duration": 16.229,
+        "text": "correlates best with micro vascular complications of diabetes which is neuropathy small blood vessels yes more blood vessels I'm sorry neuropathy so the tingling and loss of sensation in"
+      },
+      {
+        "start": 161.579,
+        "duration": 17.401,
+        "text": "the feet which sometimes causes you to shorten people's legs because of ulcers that don't heal kidney disease and kidney failure and diabetes is certainly the leading cause of hemodialysis in the"
+      },
+      {
+        "start": 174.93,
+        "duration": 17.339,
+        "text": "United States and blindness retinal complications now we know that there is strong scientific basis for suggesting an a1c below 7% because in a population"
+      },
+      {
+        "start": 188.939,
+        "duration": 15.001,
+        "text": "those complications rise dramatically once your a1c is consistently above 7% that's where the 7% recommendation came from I just want to point out one thing"
+      },
+      {
+        "start": 201.329,
+        "duration": 16.231,
+        "text": "there ask you one thing and that is the a1c is also important in knowing how well the patient has controlled their diabetes despite what they say I mean they may come in and that you said they say well you know I've got my diabetes"
+      },
+      {
+        "start": 214.889,
+        "duration": 17.97,
+        "text": "under control and today it was 120 and or 90 or 100 and that's pretty good but if you do that a1c test you find out if in fact what they're telling you is true and if they in fact have been controlling their blood sugar right that"
+      },
+      {
+        "start": 229.739,
+        "duration": 17.25,
+        "text": "is that is correct it is not the be-all and end-all because in a sense it's like the altimeter on a plane okay it might tell you that you're flying at 30,000 feet but it's not going to tell you that there's a mountain which is 35,000 feet"
+      },
+      {
+        "start": 246.449,
+        "duration": 17.641,
+        "text": "high a mile away so you have to interpret things in the right context but certainly aiming below 7 is a good target for most people"
+      },
+      {
+        "start": 260.57,
+        "duration": 17.56,
+        "text": "balanced against that is that as you aim lower you might increase the risk for hypoglycemia not enough blood sugar correct low blood glucose which which might cause people"
+      },
+      {
+        "start": 274.29,
+        "duration": 17.849,
+        "text": "to have altered mentation they can get confused they can pass out they can have a seizure so it's not always it's not a good thing and you certainly don't want patients to have hypoglycemia frequently"
+      },
+      {
+        "start": 288.199,
+        "duration": 17.111,
+        "text": "so it is reasonable to balance the risk of hypoglycemia in an individual patient versus the risk of complications when you're setting a target an eighty-year-old who doesn't have"
+      },
+      {
+        "start": 301.59,
+        "duration": 15.59,
+        "text": "complications you may be less worried about their ten-year risk of developing microvessels more blood vessel complications from the diabetes but you're certainly going to be more"
+      },
+      {
+        "start": 314.22,
+        "duration": 17.58,
+        "text": "worried if they have a low blood sugar so in those situations you might justify a slightly higher a1c target if the goal is to prevent hypoglycemia but overall"
+      },
+      {
+        "start": 329.25,
+        "duration": 16.11,
+        "text": "as a blanket recommendation I would still advocate that 7 or below is a reasonable target so you're on the side of the American Diabetes I'm certainly a.m. and what is Mayo Clinic's position"
+      },
+      {
+        "start": 342.87,
+        "duration": 15.87,
+        "text": "on a 1 I think most of my colleagues would agree with that statement I think that over the years it's become easier to achieve an a1c of 7 or below"
+      },
+      {
+        "start": 354.81,
+        "duration": 18.0,
+        "text": "while avoiding hypoglycemia there are multiple medications which make it less likely to cause hypoglycemia and also there are easier modalities to check your blood sugar so that you know if"
+      },
+      {
+        "start": 370.02,
+        "duration": 15.709,
+        "text": "you're going low or not so you're saying that the importance of keeping the blood sugar low or within range outweighs the risk of having an occasional episode of the blood sugar too low or hypoglycemia"
+      },
+      {
+        "start": 387.349,
+        "duration": 17.741,
+        "text": "not quite what I am saying is what I am saying is that in an ideal world we should always avoid the low blood sugar because a low blood sugar might have immediate consequences that you know are of relevance to the patient just as much"
+      },
+      {
+        "start": 403.169,
+        "duration": 15.03,
+        "text": "as the 10-year consequences of complications but I think balancing that risk is a lot easier today well there are lots of ways for patients to measure their blood sugar and can't they sort of tell when their blood Sugar's getting"
+      },
+      {
+        "start": 415.949,
+        "duration": 15.481,
+        "text": "low and have a candy bar or some orange juice they can they can and as I said today a lot of medication makes it possible to keep your blood sugars in a range which is acceptable for glycemic"
+      },
+      {
+        "start": 429.749,
+        "duration": 15.72,
+        "text": "control without putting you at increased risk for complications and then there is this question of awareness of low blood sugars and their ability to handle a low"
+      },
+      {
+        "start": 442.08,
+        "duration": 16.29,
+        "text": "blood sugar which might change the equation slightly certainly an airline pilot you know the risk of hypoglycemia is paramount so nobody can get a commercial flying license if they're on insulin to"
+      },
+      {
+        "start": 455.58,
+        "duration": 15.41,
+        "text": "date there is in fact an epidemic of diabetes in this country right there is an epidemic of diabetes in this country all related to obesity pretty much no I think that would be a bit unfair okay"
+      },
+      {
+        "start": 468.3,
+        "duration": 12.869,
+        "text": "so diabetes is a disease which unfortunately the patient is the person who gets blamed most of the time for having diabetes but the fact of the"
+      },
+      {
+        "start": 478.229,
+        "duration": 16.02,
+        "text": "matter is that there is some heterogeneity in the person's resistance and ability to make insulin in the face of dietary indiscretion so if you look"
+      },
+      {
+        "start": 492.3,
+        "duration": 16.349,
+        "text": "at people who need bariatric surgery okay who are extremely overweight only one-third of those people actually have diabetes so even at that extreme of weight you still have people who do not"
+      },
+      {
+        "start": 505.409,
+        "duration": 15.87,
+        "text": "have diabetes and there are people who are lean and yet develop diabetes in their 50s despite having done all the right things alright so you're on the side of the American Diabetes Association people"
+      },
+      {
+        "start": 519.18,
+        "duration": 16.52,
+        "text": "with type 2 diabetes are to keep their a1c at 7% or lower if at all possible yes I think it would be wise to discuss targets with with your primary care giver always wise to do that"
+      },
+      {
+        "start": 532.87,
+        "duration": 12.03,
+        "text": "endocrinologist dr. Adrian Vela from the Mayo Clinic talking about the new diabetes guidelines the Mayo Clinic opinion on the same thanks dr. bela my pleasure thank you"
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "videoId": "thd_sH4rgeY",
+    "title": "Mayo Clinic Minute: The facts on Type 2 diabetes",
+    "channel": "Mayo Clinic",
+    "channelUrl": "https://www.youtube.com/channel/UC8fQzKHIhSoZeSq3bwQx4mw",
+    "sourceUrl": "https://www.youtube.com/watch?v=thd_sH4rgeY",
+    "thumbnailUrl": "https://i.ytimg.com/vi/thd_sH4rgeY/maxresdefault.jpg",
+    "description": "Type 2 diabetes is a growing concern in the United States. The Centers for Disease Control and Prevention reports that 22 million people have been diagnosed with it. If you develop Type 2 diabetes, your blood sugar is too high. The disease increases your risk of conditions such as blindness, amputations, heart failure and kidney failure.",
+    "publishedAt": "2018-11-08",
+    "durationSeconds": 60,
+    "language": "en",
+    "topics": [
+      "Diabetes",
+      "Public Health",
+      "Science & Technology",
+      "Mayo Clinic",
+      "Health Care (Issue)",
+      "Healthcare Science (Field Of Study)",
+      "Vivien Williams",
+      "Dr. Adrian Vella"
+    ],
+    "transcriptSource": "auto-captions",
+    "captionLanguage": "en",
+    "ingestedAt": "2026-07-27T18:54:10.729841+00:00",
+    "reviewStatus": "automated-unreviewed",
+    "quality": {
+      "segmentCount": 5,
+      "wordCount": 163,
+      "warnings": [
+        "Automated transcript; verify medical names, dosages, and numbers."
+      ]
+    },
+    "provenance": {
+      "pipelineVersion": "1.0.0",
+      "fetchedAt": "2026-07-27T18:54:10.729841+00:00",
+      "method": "auto-captions",
+      "captionLanguage": "en",
+      "engine": null,
+      "model": null,
+      "contentSha256": "949bf7f9c371c63407f1dc2bdea3186cf5d6d8cd06ed6e1b5cdbc002ed8787fc",
+      "metadataSeconds": 1.335,
+      "processingSeconds": 1.795
     },
     "rightsNote": "Transcript provided for search and research with attribution to the source video. Source media rights remain with the original publisher.",
     "segments": [
       {
         "start": 0.0,
-        "duration": 14.0,
-        "text": "Type II diabetes is on the rise. The increased incidence of obesity is what has probably driven part of the increase in diabetes. Mayo Clinic endocrinologist Dr. Adrian Velis says diabetes happens when your blood sugars"
+        "duration": 15.75,
+        "text": "type two diabetes is on the rise the increased incidence of obesity is what has probably driven part of the increase in diabetes Mayo Clinic endocrinologist dr. Adrienne Vella says diabetes happens when your blood Sugar's too high it's a"
       },
       {
-        "start": 14.0,
-        "duration": 16.0,
-        "text": "too high. It's a leading cause of blindness and amputations, and it increases your risk of heart disease and kidney failure. Dealing with high blood sugars early gives you a better chance of spending a longer time to get rid of the disease."
+        "start": 14.309,
+        "duration": 17.04,
+        "text": "leading cause of blindness and amputations and it increases your risk of heart disease and kidney failure dealing with high blood sugars early gives you a better chance of spending a longer time not requiring medications or other interventions to control your"
       },
       {
-        "start": 30.0,
-        "duration": 13.0,
-        "text": "Some people develop type II diabetes even if they're not overweight. But for others, lifestyle choices such as eating right, exercising and losing weight can help prevent and even manage the chronic condition."
+        "start": 29.189,
+        "duration": 14.731,
+        "text": "diabetes lifestyle choices such as eating right exercising and losing weight can help prevent and even manage the chronic condition but unhealthy choices can be dangerous especially if you have a predisposition for the"
       },
       {
-        "start": 43.0,
-        "duration": 17.0,
-        "text": "But unhealthy choices can be dangerous, especially if you have a predisposition for the disease. Hereditary loads the gun while environment pulls the trigger. But you can control diabetes with proper treatment for the Mayo Clinic news network. I'm Vivian Williams."
+        "start": 41.969,
+        "duration": 15.451,
+        "text": "disease one of my more famous colleagues actually said that hereditary loads the gun while environment pulls the trigger the good news is treatment with lifestyle changes medication or even insulin can help control diabetes and"
+      },
+      {
+        "start": 55.559,
+        "duration": 5.781,
+        "text": "prevent complications for the Mayo Clinic News Network I'm Vivien Williams"
       }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "videoId": "Txqe_CAD43c",
+    "title": "Mayo Clinic Explains Diabetes",
+    "channel": "Mayo Clinic",
+    "channelUrl": "https://www.youtube.com/channel/UC8fQzKHIhSoZeSq3bwQx4mw",
+    "sourceUrl": "https://www.youtube.com/watch?v=Txqe_CAD43c",
+    "thumbnailUrl": "https://i.ytimg.com/vi/Txqe_CAD43c/maxresdefault.jpg",
+    "description": "Learning about type 1 diabetes can be intimidating. Let our experts walk you through the facts, the questions, and the answers to help you better understand this condition.  For more reading visit: https://mayocl.in/3HqQjFj. When it comes to your health, Mayo Clinic believes credible and clear information is paramount. There’s a lot to learn about diabetes. We’re here to help.",
+    "publishedAt": "2022-06-16",
+    "durationSeconds": 406,
+    "language": "en",
+    "topics": [
+      "Diabetes",
+      "Science & Technology",
+      "diabetes research",
+      "diabetic",
+      "endocrinology",
+      "insulin",
+      "insulin injection",
+      "living with diabetes"
     ],
-    "model": "mlx-community/whisper-tiny-mlx"
+    "transcriptSource": "creator-captions",
+    "captionLanguage": "en-eEY6OEpapPo",
+    "ingestedAt": "2026-07-27T18:54:05.512993+00:00",
+    "reviewStatus": "source-captions",
+    "quality": {
+      "segmentCount": 25,
+      "wordCount": 846,
+      "warnings": []
+    },
+    "provenance": {
+      "pipelineVersion": "1.0.0",
+      "fetchedAt": "2026-07-27T18:54:05.512993+00:00",
+      "method": "creator-captions",
+      "captionLanguage": "en-eEY6OEpapPo",
+      "engine": null,
+      "model": null,
+      "contentSha256": "0bc6b65e41f79bf82e572239ecbad312461d744ec88a758c6938a0b7b1a0a3e5",
+      "metadataSeconds": 1.723,
+      "processingSeconds": 2.106
+    },
+    "rightsNote": "Transcript provided for search and research with attribution to the source video. Source media rights remain with the original publisher.",
+    "segments": [
+      {
+        "start": 3.65,
+        "duration": 16.6,
+        "text": "I'm Dr. Yogish C. Kudva, an endocrinologist at Mayo Clinic. In this video, we'll cover the basics of type 1 diabetes. What is it? Who gets it? The symptoms, diagnosis and treatment. Whether you're looking for answers for"
+      },
+      {
+        "start": 20.25,
+        "duration": 17.38,
+        "text": "yourself or someone you love, we are here to give you the best information available. Type 1 diabetes is a chronic condition that affects the insulin making cells of the pancreas. It's estimated that about 1.25 million Americans live with it."
+      },
+      {
+        "start": 37.63,
+        "duration": 17.725,
+        "text": "People with type 1 diabetes don't make enough insulin, an important hormone produced by the pancreas. Insulin allows your cells to store sugar or glucose and fat and produce energy. Unfortunately, there is no known cure."
+      },
+      {
+        "start": 55.355,
+        "duration": 16.575,
+        "text": "But treatment can prevent complications and also improve everyday life for patients with type 1 diabetes. Lots of people with type 1 diabetes live a full life, and the more we learn and develop treatment for the disorder,"
+      },
+      {
+        "start": 71.93,
+        "duration": 2.2,
+        "text": "the better the outcome."
+      },
+      {
+        "start": 77.41,
+        "duration": 17.59,
+        "text": "We don't know what exactly causes type 1 diabetes. We believe that it is an autoimmune disorder where the body mistakenly destroys insulin-producing cells in the pancreas. Typically, the pancreas secretes"
+      },
+      {
+        "start": 95.0,
+        "duration": 17.58,
+        "text": "insulin into the bloodstream. The insulin circulates, letting sugar enter your cells. This sugar or glucose is the main source of energy for cells in the brain, muscle cells and other tissues. However, once"
+      },
+      {
+        "start": 112.58,
+        "duration": 17.43,
+        "text": "most insulin-producing cells are destroyed, the pancreas can't produce enough insulin, meaning the glucose can't enter the cells, resulting in an excess of blood sugar floating in the bloodstream. This can cause life-threatening complications. And this condition is called"
+      },
+      {
+        "start": 130.01,
+        "duration": 15.69,
+        "text": "diabetic ketoacidosis. Although we don't know what causes it, we do know certain factors can contribute to the onset of type 1 diabetes. Family history. Anyone with a parent or sibling with type 1 diabetes has"
+      },
+      {
+        "start": 145.7,
+        "duration": 15.855,
+        "text": "a slightly increased risk of developing it. Genetics. The presence of certain genes can also indicate an increased risk. Geography. Type 1 diabetes becomes more common as you travel away from the equator. Age."
+      },
+      {
+        "start": 161.555,
+        "duration": 12.655,
+        "text": "Although it can occur at any age, there are two noticeable peaks. The first occurs in children between 4 and 7 years of age, and the second is between 10 and 14 years old."
+      },
+      {
+        "start": 177.22,
+        "duration": 16.165,
+        "text": "Signs and symptoms of type 1 diabetes can appear rather suddenly, especially in children. They may include increased thirst, frequent urination, bed wetting in children who previously didn't wet the bed,"
+      },
+      {
+        "start": 193.385,
+        "duration": 16.245,
+        "text": "extreme hunger, unintended weight loss, fatigue and weakness, blurred vision, irritability, and other mood changes. If you or your child are"
+      },
+      {
+        "start": 209.63,
+        "duration": 4.75,
+        "text": "experiencing any of these symptoms, you should talk to your doctor."
+      },
+      {
+        "start": 217.3,
+        "duration": 15.76,
+        "text": "The best way to determine if you have type 1 diabetes is a blood test. There are different methods such as an A1C test, a random blood sugar test, or a fasting blood sugar test. They are all effective, and your doctor can help"
+      },
+      {
+        "start": 233.06,
+        "duration": 16.29,
+        "text": "determine what's appropriate for you. If you are diagnosed with diabetes, your doctor may order additional tests to check for antibodies that are common in type 1 diabetes, and a test called C-peptide, which measures the amount"
+      },
+      {
+        "start": 249.35,
+        "duration": 13.06,
+        "text": "of insulin produced when checked simultaneously with a fasting glucose. These tests can help distinguish between type 1 and type 2 diabetes, when a diagnosis is uncertain."
+      },
+      {
+        "start": 265.66,
+        "duration": 17.769,
+        "text": "If you have been diagnosed with type 1 diabetes, you may be wondering what treatment looks like. It could mean taking insulin, counting carbohydrates, fat, protein, and monitoring your glucose frequently, eating healthy foods, and exercising regularly"
+      },
+      {
+        "start": 283.429,
+        "duration": 16.441,
+        "text": "to maintain a healthy weight. Generally, those with type 1 diabetes will need lifelong insulin therapy. There are many different types of insulin, and more are being developed that are more efficient, and what you may take may change. Again, your doctor will help"
+      },
+      {
+        "start": 299.87,
+        "duration": 17.715,
+        "text": "you navigate what's right for you. A significant advance in treatment from the last several years has been the development and availability of continuous glucose monitoring and insulin pumps that automatically adjust insulin working with a continuous glucose monitor."
+      },
+      {
+        "start": 317.585,
+        "duration": 17.159,
+        "text": "This type of treatment is the best treatment at this time for type 1 diabetes. This is an exciting time for patients and for physicians that are keen to develop and prescribe such therapies. Surgery is another option. A successful pancreas transplant"
+      },
+      {
+        "start": 334.744,
+        "duration": 17.326,
+        "text": "can erase the need for additional insulin. However, transplants aren't always available nor successful, and the procedure can pose serious risks. Sometimes it may outweigh the dangers of diabetes itself. So transplants are often reserved for"
+      },
+      {
+        "start": 352.07,
+        "duration": 17.86,
+        "text": "those with very difficult to manage conditions. A successful transplant can bring life-transforming results. However, surgery is always a serious endeavor and requires ample research and consideration from you, your family, and your medical team."
+      },
+      {
+        "start": 372.64,
+        "duration": 17.365,
+        "text": "The fact that we don't know what causes type 1 diabetes can be a lot. The fact that we don't have a cure for it, even more so. But with the right doctor, medical team and treatment, type 1 diabetes can be managed,"
+      },
+      {
+        "start": 390.005,
+        "duration": 14.485,
+        "text": "so those who live with it can get on living. If you would like to learn even more about type 1 diabetes, watch our other related videos or visit MayoClinic.org. We wish you well."
+      }
+    ]
   },
   {
     "schemaVersion": 1,

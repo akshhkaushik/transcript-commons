@@ -1,4 +1,8 @@
 import { getTranscript, transcriptWordCount } from "../../../transcript-data";
+import {
+  CANONICAL_SITE_ORIGIN,
+  canonicalHeaders,
+} from "../../../site-url";
 import { timestamp } from "../../../transcript-utils";
 
 export async function GET(
@@ -12,7 +16,7 @@ export async function GET(
   const body = `${video.title}
 Channel: ${video.channel}
 Source: ${video.sourceUrl}
-Canonical transcript: ${new URL(request.url).origin}/videos/${video.videoId}
+Canonical transcript: ${CANONICAL_SITE_ORIGIN}/videos/${video.videoId}
 Published: ${video.publishedAt}
 Language: ${video.language}
 Topics: ${video.topics.join(", ")}
@@ -27,7 +31,10 @@ ${video.segments.map((segment) => `[${timestamp(segment.start)}] ${segment.text}
     headers: {
       "content-type": "text/plain; charset=utf-8",
       "cache-control": "public, max-age=300, s-maxage=86400",
-      "x-robots-tag": "index, follow",
+      ...canonicalHeaders(
+        `/videos/${video.videoId}/transcript.txt`,
+        request.url,
+      ),
     },
   });
 }

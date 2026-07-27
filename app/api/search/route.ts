@@ -1,5 +1,9 @@
 import { getTranscripts } from "../../transcript-data";
 import { excerpt, searchTranscripts } from "../../transcript-utils";
+import {
+  CANONICAL_SITE_ORIGIN,
+  canonicalHeaders,
+} from "../../site-url";
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
@@ -8,20 +12,25 @@ export async function GET(request: Request) {
     100,
     Math.max(1, Number.parseInt(url.searchParams.get("limit") ?? "25", 10) || 25),
   );
-  const origin = url.origin;
+  const origin = CANONICAL_SITE_ORIGIN;
   const hits = searchTranscripts(getTranscripts(), query).slice(0, limit);
 
   return Response.json(
     {
       query,
       count: hits.length,
-      results: hits.map(({ transcript, match }) => ({
+      algorithm: query ? "BM25" : "latest",
+      results: hits.map(({ transcript, match, score, matchedTerms }) => ({
         videoId: transcript.videoId,
         title: transcript.title,
         channel: transcript.channel,
         topics: transcript.topics,
+        score: score ?? null,
+        matchedTerms: matchedTerms ?? [],
         transcriptUrl: `${origin}/videos/${transcript.videoId}`,
         plainTextUrl: `${origin}/videos/${transcript.videoId}/transcript.txt`,
+        jsonObjectUrl: `${origin}/data/transcripts/${transcript.videoId}.json`,
+        textObjectUrl: `${origin}/data/transcripts/${transcript.videoId}.txt`,
         sourceUrl: transcript.sourceUrl,
         match: match
           ? {
@@ -34,7 +43,7 @@ export async function GET(request: Request) {
     {
       headers: {
         "cache-control": "public, max-age=60, s-maxage=600",
-        "x-robots-tag": "index, follow",
+        ...canonicalHeaders(`/api/search?q=${encodeURIComponent(query)}`, request.url),
       },
     },
   );

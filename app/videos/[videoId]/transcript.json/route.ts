@@ -1,4 +1,8 @@
 import { getTranscript } from "../../../transcript-data";
+import {
+  CANONICAL_SITE_ORIGIN,
+  canonicalHeaders,
+} from "../../../site-url";
 
 export async function GET(
   request: Request,
@@ -9,13 +13,16 @@ export async function GET(
   if (!video) return Response.json({ error: "Not found" }, { status: 404 });
   return Response.json(
     {
-      $schema: `${new URL(request.url).origin}/transcript-schema.json`,
+      $schema: `${CANONICAL_SITE_ORIGIN}/transcript-schema.json`,
       ...video,
     },
     {
       headers: {
         "cache-control": "public, max-age=300, s-maxage=86400",
-        "x-robots-tag": "index, follow",
+        ...canonicalHeaders(
+          `/videos/${video.videoId}/transcript.json`,
+          request.url,
+        ),
       },
     },
   );

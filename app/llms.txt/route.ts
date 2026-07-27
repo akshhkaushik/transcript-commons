@@ -1,12 +1,16 @@
 import { getTranscripts } from "../transcript-data";
+import {
+  CANONICAL_SITE_ORIGIN,
+  canonicalHeaders,
+} from "../site-url";
 
 export async function GET(request: Request) {
-  const origin = new URL(request.url).origin;
+  const origin = CANONICAL_SITE_ORIGIN;
   const transcripts = getTranscripts();
   const entries = transcripts
     .map(
       (video) =>
-        `- ${video.title} — ${video.channel}\n  HTML: ${origin}/videos/${video.videoId}\n  Text: ${origin}/videos/${video.videoId}/transcript.txt\n  Source: ${video.sourceUrl}`,
+        `- ${video.title} — ${video.channel}\n  HTML: ${origin}/videos/${video.videoId}\n  Text: ${origin}/videos/${video.videoId}/transcript.txt\n  Static JSON: ${origin}/data/transcripts/${video.videoId}.json\n  Source: ${video.sourceUrl}`,
     )
     .join("\n");
 
@@ -20,6 +24,11 @@ Every transcript page includes source provenance, timestamps, topics, and the co
 - Website: ${origin}/
 - JSON index: ${origin}/api/transcripts
 - Search API: ${origin}/api/search?q=diabetes
+- Static library object: ${origin}/data/library.json
+- Static BM25 index: ${origin}/data/search-index.json
+- Library status: ${origin}/status
+- Machine-readable status: ${origin}/data/status.json
+- Corrections and rights policy: ${origin}/policies
 - Record schema: ${origin}/transcript-schema.json
 - Sitemap: ${origin}/sitemap.xml
 
@@ -37,7 +46,7 @@ Each record declares whether its text came from creator captions, automatic capt
     headers: {
       "content-type": "text/plain; charset=utf-8",
       "cache-control": "public, max-age=300, s-maxage=3600",
-      "x-robots-tag": "index, follow",
+      ...canonicalHeaders("/llms.txt", request.url),
     },
   });
 }

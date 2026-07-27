@@ -1,33 +1,99 @@
-# Operations
+# Transcript Commons operations
 
-## Recommended batch policy
+## Canonical production origin
 
-- Start with trusted healthcare institutions and known expert channels.
-- Run one request at a time with at least a one-to-two second delay.
-- Prefer creator captions; do not spend local compute when usable captions exist.
-- Retry transient failures with exponential backoff.
-- Keep `var/ingest-state.json` and the batch log until the run is reviewed.
-- Commit transcript records in small, inspectable batches.
+The only indexable origin is `https://transcript-commons.vercel.app`.
+`NEXT_PUBLIC_SITE_URL` may override it for a future custom domain, but a domain
+migration must also update generated-data and IndexNow origins. The Sites mirror
+publishes the same public content with a canonical link to Vercel and
+`noindex, follow`.
 
-## Review states
+## Ingestion
 
-- `source-captions`: creator-provided text; still verify high-stakes details.
-- `automated-unreviewed`: automatic captions or local ASR; visible warning required.
-- `reviewed`: a human checked identity, medical names, numerical claims, and timestamps.
+1. Put one YouTube URL per line in a file under `queues/`.
+2. Run `scripts/ingest_batch.py` from the Mac with delay and retry settings.
+3. Let creator captions win; use automatic captions second; run local ASR only
+   when neither caption source can be retrieved.
+4. Commit the changed `content/transcripts.json`.
 
-## Failure recovery
+The batch state and log belong under ignored `var/`. Use `--summary-file` for a
+machine-readable completion record, `--notify` for a macOS notification, and
+`INGEST_ALERT_WEBHOOK` for remote failure alerts.
 
-Re-run the same `ingest_batch.py` command. Successful and published entries are
-skipped. Failed entries are retried up to the configured limit and retain their
-last error in the state file.
+Recommended batch policy:
 
-If YouTube requests authentication, use `--cookies-from-browser chrome` (or the
-browser installed on the Mac) only for videos the operator is authorized to
-access. Never publish transcripts of private or access-controlled material.
+- start with trusted healthcare institutions and known expert channels;
+- run one request at a time with at least a one-to-two second delay;
+- prefer creator captions and do not spend local compute when usable captions exist;
+- retry transient failures with exponential backoff;
+- retain the state file and batch log until the run is reviewed;
+- commit transcript records in small, inspectable batches.
 
-## Corrections
+To recover from a failure, re-run the same batch command. Successful and already
+published entries are skipped, while failed entries retain their last error and
+retry count. If YouTube requests authentication, use
+`--cookies-from-browser chrome` (or the installed browser) only for material the
+operator is authorized to access. Never publish private or access-controlled
+material.
 
-Edit the affected record, preserve its source URL, recompute the content hash by
-re-ingesting or using the pipeline helper, run content validation, then deploy.
-For a takedown, remove the record, rebuild, and verify that its canonical URL
-returns 404 and is absent from the sitemap and agent index.
+## Editorial review
+
+Automated captions and local ASR are `automated-unreviewed`. Do not change that
+label merely because the text reads fluently. Check the full source, especially
+speaker names, medical terms, medications, dosages, units, numbers, and any
+claim likely to be cited.
+
+`scripts/review_queue.py` lists pending records and records a completed review.
+Marking a review saves reviewer identity, time, notes, and a fresh transcript
+content hash. Public corrections use the repository issue form. Private rights
+and takedown requests use the email on `/policies`.
+
+## Generated public data
+
+`npm run generate:data` deterministically creates:
+
+- one `.json` and `.txt` object per video under `public/data/transcripts/`;
+- `public/data/library.json`;
+- `public/data/status.json`;
+- `public/data/search-index.json`;
+- build-time status and index snapshots under `content/`.
+
+The index stores token postings for BM25 ranking. Transcript objects are
+sharded so agents do not need to download a single ever-growing source file.
+When the collection becomes too large for build-time JSON imports, the same
+object/index format can move to object storage without changing public URLs.
+
+## Release checklist
+
+1. Run `npm test`.
+2. Run `npm run lint`.
+3. Run `npm run build:vercel`.
+4. Run `npm run build`.
+5. Push `main` to the public GitHub repository.
+6. Confirm the connected Vercel deployment is ready.
+7. Publish the exact pushed commit to the existing Sites project.
+8. Run `node tests/smoke-server.mjs https://transcript-commons.vercel.app`.
+9. Run `python3 scripts/submit_indexnow.py --submit`.
+
+## Monitoring and incidents
+
+The production-monitor GitHub workflow runs twice per hour. It checks the
+homepage search, a transcript page and both alternate formats, APIs, health
+endpoint, status and policy pages, generated objects, crawler files, sitemap,
+and `llms.txt`.
+
+On failure it opens or updates `[Monitor] Transcript Commons production
+failure`. On recovery it comments and closes the incident. Batch ingestion
+failures are separate: they remain in the resume-state file and trigger the
+configured desktop/webhook alert.
+
+## Google and Bing
+
+The sitemap is:
+
+`https://transcript-commons.vercel.app/sitemap.xml`
+
+It is declared in `robots.txt`. IndexNow provides automatic notification to Bing
+and other participants. Google Search Console and the Bing Webmaster Tools
+dashboard require the operator to sign in and verify the URL-prefix property;
+after verification, submit the sitemap path `sitemap.xml`.

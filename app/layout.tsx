@@ -1,9 +1,17 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { requestOrigin } from "./site-url";
+import {
+  CANONICAL_SITE_ORIGIN,
+  currentRequestOrigin,
+  requestOrigin,
+} from "./site-url";
 
 export async function generateMetadata(): Promise<Metadata> {
   const origin = await requestOrigin();
+  const requestOriginValue = await currentRequestOrigin();
+  const isCanonicalHost =
+    requestOriginValue === CANONICAL_SITE_ORIGIN ||
+    requestOriginValue.includes("localhost");
 
   return {
     metadataBase: new URL(origin),
@@ -23,10 +31,10 @@ export async function generateMetadata(): Promise<Metadata> {
     ],
     alternates: { canonical: "/" },
     robots: {
-      index: true,
+      index: isCanonicalHost,
       follow: true,
       googleBot: {
-        index: true,
+        index: isCanonicalHost,
         follow: true,
         "max-snippet": -1,
         "max-image-preview": "large",

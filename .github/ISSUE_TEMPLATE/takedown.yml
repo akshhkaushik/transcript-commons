@@ -1,0 +1,35 @@
+name: Publisher or takedown request
+description: Request removal or amendment as a source publisher or rights holder.
+title: "[Rights request] "
+labels:
+  - rights-request
+body:
+  - type: markdown
+    attributes:
+      value: Do not include confidential personal information here. For a private request, email the address on the site's policy page.
+  - type: input
+    id: transcript
+    attributes:
+      label: Transcript URL
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Source video URL
+    validations:
+      required: true
+  - type: textarea
+    id: relationship
+    attributes:
+      label: Relationship to the source
+      description: Explain whether you are the publisher, creator, or an authorized representative.
+    validations:
+      required: true
+  - type: textarea
+    id: action
+    attributes:
+      label: Requested action
+      description: State whether you request removal, correction, attribution changes, or another action.
+    validations:
+      required: true

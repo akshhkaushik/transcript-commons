@@ -1,0 +1,41 @@
+name: Transcript correction
+description: Report an error in a published timestamped transcript.
+title: "[Correction] "
+labels:
+  - transcript-correction
+body:
+  - type: input
+    id: transcript
+    attributes:
+      label: Transcript URL
+      placeholder: https://transcript-commons.vercel.app/videos/VIDEO_ID
+    validations:
+      required: true
+  - type: input
+    id: timestamp
+    attributes:
+      label: Timestamp
+      description: The timestamp where the error occurs.
+      placeholder: 03:42
+    validations:
+      required: true
+  - type: textarea
+    id: current
+    attributes:
+      label: Current text
+    validations:
+      required: true
+  - type: textarea
+    id: correction
+    attributes:
+      label: Proposed correction and evidence
+      description: Include a source when the correction concerns a medical name, number, unit, or dosage.
+    validations:
+      required: true
+  - type: checkboxes
+    id: source_checked
+    attributes:
+      label: Source check
+      options:
+        - label: I checked the linked source video at this timestamp.
+          required: true

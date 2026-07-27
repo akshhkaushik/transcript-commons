@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://transcript-commons.rurradvisors.chatgpt.site/transcript-schema.json",
+  "$id": "https://transcript-commons.vercel.app/transcript-schema.json",
   "title": "Transcript Commons record",
   "description": "A timestamped, provenance-aware transcript of a source YouTube video.",
   "type": "object",
@@ -79,6 +79,17 @@
         "automated-unreviewed",
         "reviewed"
       ]
+    },
+    "reviewedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "reviewedBy": {
+      "type": "string",
+      "minLength": 1
+    },
+    "reviewNotes": {
+      "type": "string"
     },
     "segments": {
       "type": "array",

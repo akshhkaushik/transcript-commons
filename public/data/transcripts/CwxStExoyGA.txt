@@ -1,0 +1,38 @@
+Ask Mayo Clinic: Diabetes
+Channel: Mayo Clinic
+Source: https://www.youtube.com/watch?v=CwxStExoyGA
+Canonical transcript: https://transcript-commons.vercel.app/videos/CwxStExoyGA
+
+[0:06] >> [MUSIC] Hi, I'm Dr. Yogish C Kudva. I'm an endocrinologist at Mayo Clinic and I'm here to answer some of the important questions you may have about type one diabetes.
+
+[0:23] The best current treatment for type one diabetes is an automated insulin delivery system. This system includes a continuous glucose monitor, insulin pump, and a computer algorithm that continually adjust insulin responding to
+
+[0:40] the continuous glucose monitoring signal. The patient still has to enter information about the amount of carbohydrate he or she eats at mealtimes provide
+
+[0:52] the meal time time-related insulin [MUSIC]. Testing using a glucose meter is not enough because glucose measurements in people with type one diabetes,
+
+[1:07] wary from normal to low and normal to high very rapidly in the course of a day, a continuous glucose monitor is needed to assess whether treatment is effective and also to determine how to improve treatment.
+
+[1:28] Current guidelines recommend use of a continuous glucose monitor. The percentage of time that is spent daily with glucose between 70 and 180 milligram per deciliter is the main measurement of appropriate treatment. This percentage should be
+
+[1:45] 70% or higher daily. In addition, percentage of time spent with glucose below 70 should be less than four percent and greater than 250 should be less than five percent. Clearly, hemoglobin A1C testing to evaluate adequacy
+
+[2:03] of treatment is not enough.
+
+[2:10] In certain people with type one diabetes transplantation can be undertaken. This could be pancreas transplantation or transplantation of insulin making cells called islet. Islet transplantation is considered research in the US.
+
+[2:27] Pancreas transplantation is available as a clinical treatment. These patients with hypoglycemia unawareness may benefit from a pancreas transplant. People with type one diabetes who develop recurrent diabetic ketoacidosis may also benefit from a pancreas transplant.
+
+[2:44] People with type one diabetes who have developed kidney failure, could have their lives transformed by transplantation of both the pancreas and the kidney.
+
+[2:59] There is active research going on to prevent type one diabetes from happening in children and adults who are less than 45 years old. People who are eligible for such research studies are people who have a positive antibody test for type one diabetes and
+
+[3:16] are willing to be in such studies. The treatment being tested is medication that suppresses the immune system. Willing participants would be randomized to receive immune suppressive treatment or placebo treatment. Placebo looks like the medication,
+
+[3:33] but does not do the same thing in the body. Initial research studies have been successful in decreasing the risk of development of type one diabetes in people that have received the immune system suppressing treatment and therefore, larger studies are now being underpaid.
+
+[3:50] [MUSIC] Try to be informed about research going on and treatments that may be approved for type one diabetes. You can get this information through already available publications.
+
+[4:08] Make sure that at least annually you see a physician who is an expert on your disorder. Never hesitate to ask your medical team any questions or concerns you have. Being informed makes all the difference. Thanks for your time and we wish well
+
+[4:25] [MUSIC].

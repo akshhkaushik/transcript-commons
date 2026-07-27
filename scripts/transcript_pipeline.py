@@ -6,6 +6,7 @@ from __future__ import annotations
 import hashlib
 import html
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -16,7 +17,7 @@ from urllib.parse import parse_qs, urlparse
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA_FILE = ROOT / "content" / "transcripts.json"
-PIPELINE_VERSION = "1.0.0"
+PIPELINE_VERSION = "1.1.0"
 
 HEALTHCARE_TOPICS: dict[str, tuple[str, ...]] = {
     "Diabetes": ("diabetes", "diabetic", "insulin", "a1c", "blood sugar", "glucose"),
@@ -95,8 +96,22 @@ def run(
 
 
 def find_binary(name: str, override: str | None = None) -> str:
-    candidate = override or shutil.which(name)
-    if not candidate:
+    candidates = [
+        override,
+        shutil.which(name),
+        str(ROOT / ".venv" / "bin" / name),
+        f"/opt/homebrew/bin/{name}",
+        f"/usr/local/bin/{name}",
+    ]
+    candidate = next(
+        (
+            value
+            for value in candidates
+            if value and Path(value).is_file() and os.access(value, os.X_OK)
+        ),
+        None,
+    )
+    if candidate is None:
         raise RuntimeError(
             f"Could not find {name}. Install it or provide its path with the matching CLI option."
         )
@@ -410,6 +425,19 @@ def validate_record(record: dict[str, Any]) -> list[str]:
     source_id = youtube_video_id(str(record.get("sourceUrl") or ""))
     if source_id and video_id and source_id != video_id:
         errors.append("sourceUrl video ID does not match videoId")
+
+    review_status = str(record.get("reviewStatus") or "")
+    if review_status not in {
+        "source-captions",
+        "automated-unreviewed",
+        "reviewed",
+    }:
+        errors.append("reviewStatus must declare the transcript review state")
+    if review_status == "reviewed":
+        if not normalize_text(str(record.get("reviewedBy") or "")):
+            errors.append("reviewed records must include reviewedBy")
+        if not normalize_text(str(record.get("reviewedAt") or "")):
+            errors.append("reviewed records must include reviewedAt")
 
     segments = record.get("segments")
     if not isinstance(segments, list) or not segments:

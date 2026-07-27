@@ -10,6 +10,8 @@ import os
 import subprocess
 import sys
 import time
+import urllib.error
+import urllib.request
 from pathlib import Path
 from typing import Any
 
@@ -58,6 +60,79 @@ def save_state(path: Path, state: dict[str, Any]) -> None:
         encoding="utf-8",
     )
     temporary.replace(path)
+
+
+def write_summary(
+    path: Path,
+    *,
+    state_file: Path,
+    total: int,
+    available: int,
+    failed: int,
+    status: str,
+) -> dict[str, Any]:
+    payload = {
+        "version": 1,
+        "status": status,
+        "updatedAt": utc_now(),
+        "stateFile": str(state_file),
+        "total": total,
+        "available": available,
+        "failed": failed,
+    }
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_suffix(".tmp")
+    temporary.write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    temporary.replace(path)
+    return payload
+
+
+def desktop_alert(title: str, message: str) -> None:
+    if sys.platform != "darwin":
+        print(f"alert: {title}: {message}", file=sys.stderr)
+        return
+    script = (
+        f"display notification {json.dumps(message)} "
+        f"with title {json.dumps(title)}"
+    )
+    subprocess.run(
+        ["osascript", "-e", script],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+
+def webhook_alert(url: str, payload: dict[str, Any]) -> None:
+    request = urllib.request.Request(
+        url,
+        data=json.dumps(payload).encode("utf-8"),
+        headers={"content-type": "application/json"},
+        method="POST",
+    )
+    try:
+        with urllib.request.urlopen(request, timeout=15) as response:
+            if response.status >= 400:
+                raise RuntimeError(f"webhook returned HTTP {response.status}")
+    except (urllib.error.URLError, TimeoutError, RuntimeError) as error:
+        print(f"warning: failed to send ingestion webhook: {error}", file=sys.stderr)
+
+
+def send_alerts(
+    payload: dict[str, Any], *, notify_desktop: bool, webhook_url: str | None
+) -> None:
+    title = "Transcript Commons ingestion"
+    message = (
+        f"{payload['available']}/{payload['total']} available; "
+        f"{payload['failed']} failed ({payload['status']})."
+    )
+    if notify_desktop:
+        desktop_alert(title, message)
+    if webhook_url:
+        webhook_alert(webhook_url, {"title": title, "message": message, **payload})
 
 
 def command_for(args: argparse.Namespace, url: str) -> list[str]:
@@ -117,7 +192,25 @@ def main() -> int:
     parser.add_argument(
         "--whisper-cpp-model", default=os.environ.get("WHISPER_CPP_MODEL")
     )
+    parser.add_argument(
+        "--notify",
+        action="store_true",
+        help="Show a macOS desktop notification when the batch finishes.",
+    )
+    parser.add_argument(
+        "--alert-webhook",
+        default=os.environ.get("INGEST_ALERT_WEBHOOK"),
+        help="POST the final JSON summary to this webhook URL.",
+    )
+    parser.add_argument(
+        "--summary-file",
+        type=Path,
+        help="Final JSON summary path (defaults beside the state file).",
+    )
     args = parser.parse_args()
+    summary_file = args.summary_file or args.state_file.with_name(
+        f"{args.state_file.stem}-summary.json"
+    )
 
     urls = load_urls(Path(args.file))
     state = load_state(args.state_file)
@@ -193,6 +286,23 @@ def main() -> int:
     except KeyboardInterrupt:
         print("Interrupted; progress has been saved.", file=sys.stderr)
         save_state(args.state_file, state)
+        available = sum(
+            item["status"] in {"succeeded", "published"}
+            for item in state["items"].values()
+        )
+        summary = write_summary(
+            summary_file,
+            state_file=args.state_file,
+            total=len(urls),
+            available=available,
+            failed=sum(item["status"] == "failed" for item in state["items"].values()),
+            status="interrupted",
+        )
+        send_alerts(
+            summary,
+            notify_desktop=args.notify,
+            webhook_url=args.alert_webhook,
+        )
         return 130
 
     succeeded_count = sum(
@@ -202,6 +312,19 @@ def main() -> int:
     print(
         f"Batch complete: {succeeded_count} available, {failures} failed. "
         f"State: {args.state_file}"
+    )
+    summary = write_summary(
+        summary_file,
+        state_file=args.state_file,
+        total=len(urls),
+        available=succeeded_count,
+        failed=failures,
+        status="failed" if failures else "succeeded",
+    )
+    send_alerts(
+        summary,
+        notify_desktop=args.notify,
+        webhook_url=args.alert_webhook,
     )
     return 1 if failures else 0
 

@@ -46,7 +46,8 @@ export default async function Home({
         </Link>
         <div className="nav-links">
           <a href="#library">Library</a>
-          <a href="#how-it-works">How it works</a>
+          <Link href="/status">Status</Link>
+          <Link href="/policies">Policies</Link>
           <a href="/llms.txt">For agents ↗</a>
         </div>
       </nav>
@@ -262,6 +263,7 @@ export default async function Home({
           <a href="/llms.txt">LLMS.TXT ↗</a>
           <a href="/api/transcripts">JSON INDEX ↗</a>
           <a href="/api/search?q=diabetes">SEARCH API ↗</a>
+          <a href="/data/library.json">STATIC DATA ↗</a>
           <a href="/sitemap.xml">SITEMAP ↗</a>
         </div>
       </section>
@@ -274,7 +276,10 @@ export default async function Home({
           <span>TRANSCRIPT COMMONS</span>
         </Link>
         <p>Free transcripts for humans and research agents.</p>
-        <p>Built in public. Healthcare first.</p>
+        <p>
+          <Link href="/status">Status</Link> ·{" "}
+          <Link href="/policies">Corrections and rights</Link>
+        </p>
       </footer>
     </main>
   );

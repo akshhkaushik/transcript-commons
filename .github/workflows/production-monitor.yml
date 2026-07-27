@@ -1,0 +1,96 @@
+name: Production monitor
+
+on:
+  schedule:
+    - cron: "17,47 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: transcript-commons-production-monitor
+  cancel-in-progress: false
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify public product surfaces
+        id: smoke
+        continue-on-error: true
+        run: |
+          node tests/smoke-server.mjs \
+            https://transcript-commons.vercel.app \
+            sI-1ON2jgr8 2>&1 | tee monitor-output.log
+
+      - name: Open, update, or close monitoring issue
+        if: always()
+        uses: actions/github-script@v7
+        env:
+          MONITOR_OUTCOME: ${{ steps.smoke.outcome }}
+        with:
+          script: |
+            const fs = require("node:fs");
+            const title = "[Monitor] Transcript Commons production failure";
+            const output = fs.existsSync("monitor-output.log")
+              ? fs.readFileSync("monitor-output.log", "utf8").slice(-12000)
+              : "No monitor output was captured.";
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: "open",
+              per_page: 100,
+            });
+            const existing = issues.find(
+              (issue) => !issue.pull_request && issue.title === title,
+            );
+            if (process.env.MONITOR_OUTCOME !== "success") {
+              const body = [
+                "The scheduled production smoke test failed.",
+                "",
+                `Run: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+                "",
+                "```text",
+                output,
+                "```",
+              ].join("\n");
+              if (existing) {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: existing.number,
+                  body,
+                });
+              } else {
+                await github.rest.issues.create({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  title,
+                  body,
+                  labels: ["uptime-monitor"],
+                });
+              }
+            } else if (existing) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: existing.number,
+                body: "The production smoke test is healthy again; closing this incident.",
+              });
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: existing.number,
+                state: "closed",
+                state_reason: "completed",
+              });
+            }
+
+      - name: Fail workflow when smoke test fails
+        if: steps.smoke.outcome != 'success'
+        run: exit 1

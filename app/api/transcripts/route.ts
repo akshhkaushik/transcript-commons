@@ -1,7 +1,11 @@
 import { getTranscripts, transcriptWordCount } from "../../transcript-data";
+import {
+  CANONICAL_SITE_ORIGIN,
+  canonicalHeaders,
+} from "../../site-url";
 
 export async function GET(request: Request) {
-  const origin = new URL(request.url).origin;
+  const origin = CANONICAL_SITE_ORIGIN;
   const transcripts = getTranscripts();
   return Response.json({
     schemaVersion: 1,
@@ -18,10 +22,14 @@ export async function GET(request: Request) {
       transcriptUrl: `${origin}/videos/${video.videoId}`,
       plainTextUrl: `${origin}/videos/${video.videoId}/transcript.txt`,
       jsonUrl: `${origin}/videos/${video.videoId}/transcript.json`,
+      jsonObjectUrl: `${origin}/data/transcripts/${video.videoId}.json`,
+      textObjectUrl: `${origin}/data/transcripts/${video.videoId}.txt`,
       topics: video.topics,
       language: video.language,
       transcriptSource: video.transcriptSource,
       reviewStatus: video.reviewStatus ?? "unreviewed",
+      reviewedAt: video.reviewedAt ?? null,
+      reviewedBy: video.reviewedBy ?? null,
       durationSeconds: video.durationSeconds,
       wordCount: transcriptWordCount(video),
       publishedAt: video.publishedAt,
@@ -30,7 +38,7 @@ export async function GET(request: Request) {
   }, {
     headers: {
       "cache-control": "public, max-age=300, s-maxage=3600",
-      "x-robots-tag": "index, follow",
+      ...canonicalHeaders("/api/transcripts", request.url),
     },
   });
 }
