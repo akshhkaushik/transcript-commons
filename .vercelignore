@@ -1,0 +1,25 @@
+# Local dependencies and build products
+node_modules
+.next
+.vinext
+.wrangler
+dist
+
+# Local transcription environment and generated work
+.venv
+output
+outputs
+tmp
+var
+work
+scripts/__pycache__
+tests/__pycache__
+*.pyc
+
+# Local credentials and platform state
+.env*
+.vercel
+
+# Repository-only metadata
+.git
+.github
