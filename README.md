@@ -82,6 +82,23 @@ npm run dev
 
 Then open `http://localhost:3000`.
 
+For the standard Next.js runtime used by Vercel:
+
+```bash
+npm run dev:vercel
+```
+
+## Deployment
+
+The repository supports two deployment targets:
+
+- Vercel uses `npm run build:vercel` through `vercel.json`.
+- OpenAI Sites uses the default vinext `npm run build` command.
+
+Both targets serve the same public pages and machine-readable transcript
+endpoints. No hosted service performs transcription; ingestion remains a local
+command so audio and model compute stay on the operator's Mac.
+
 ## Publish safely
 
 Before publishing a transcript, verify:
