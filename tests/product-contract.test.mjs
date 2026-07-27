@@ -97,4 +97,6 @@ test("uses Vercel as the only canonical origin", async () => {
   assert.match(siteUrl, /transcript-commons\.vercel\.app/);
   assert.match(siteUrl, /noindex, follow/);
   assert.match(layout, /isCanonicalHost/);
+  assert.match(layout, /SITE_MIRROR_NOINDEX/);
+  assert.match(layout, /canonical: CANONICAL_SITE_ORIGIN/);
 });

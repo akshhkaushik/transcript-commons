@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import statusData from "../../content/library-status.json";
+import { CANONICAL_SITE_ORIGIN } from "../site-url";
 
 type LibraryStatus = {
   generatedAt: string;
@@ -34,7 +35,7 @@ export const metadata: Metadata = {
   title: "Library status",
   description:
     "Public ingestion, provenance, review, and queue status for Transcript Commons.",
-  alternates: { canonical: "/status" },
+  alternates: { canonical: `${CANONICAL_SITE_ORIGIN}/status` },
 };
 
 export default function StatusPage() {

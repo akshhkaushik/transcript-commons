@@ -6,7 +6,7 @@ import {
   getTranscripts,
   transcriptWordCount,
 } from "../../transcript-data";
-import { requestOrigin } from "../../site-url";
+import { CANONICAL_SITE_ORIGIN, requestOrigin } from "../../site-url";
 import {
   durationIso,
   timestamp,
@@ -38,10 +38,10 @@ export async function generateMetadata({
     title: video.title,
     description: `${video.title} by ${video.channel}: full timestamped transcript and source video.`,
     alternates: {
-      canonical: `/videos/${video.videoId}`,
+      canonical: `${CANONICAL_SITE_ORIGIN}/videos/${video.videoId}`,
       types: {
-        "text/plain": `/videos/${video.videoId}/transcript.txt`,
-        "application/json": `/videos/${video.videoId}/transcript.json`,
+        "text/plain": `${CANONICAL_SITE_ORIGIN}/videos/${video.videoId}/transcript.txt`,
+        "application/json": `${CANONICAL_SITE_ORIGIN}/videos/${video.videoId}/transcript.json`,
       },
     },
     openGraph: {

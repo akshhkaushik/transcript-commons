@@ -9,9 +9,11 @@ import {
 export async function generateMetadata(): Promise<Metadata> {
   const origin = await requestOrigin();
   const requestOriginValue = await currentRequestOrigin();
+  const isExplicitMirror = process.env.SITE_MIRROR_NOINDEX === "1";
   const isCanonicalHost =
-    requestOriginValue === CANONICAL_SITE_ORIGIN ||
-    requestOriginValue.includes("localhost");
+    !isExplicitMirror &&
+    (requestOriginValue === CANONICAL_SITE_ORIGIN ||
+      requestOriginValue.includes("localhost"));
 
   return {
     metadataBase: new URL(origin),
@@ -29,7 +31,7 @@ export async function generateMetadata(): Promise<Metadata> {
       "agent-readable",
       "open knowledge",
     ],
-    alternates: { canonical: "/" },
+    alternates: { canonical: CANONICAL_SITE_ORIGIN },
     robots: {
       index: isCanonicalHost,
       follow: true,

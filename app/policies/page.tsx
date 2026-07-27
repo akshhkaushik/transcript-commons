@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { CANONICAL_SITE_ORIGIN } from "../site-url";
 
 const CONTACT_EMAIL = "aksh.heisenberg@gmail.com";
 const ISSUES_URL =
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
   title: "Rights, corrections, and takedowns",
   description:
     "Transcript Commons policies for source attribution, medical accuracy, corrections, privacy, and takedown requests.",
-  alternates: { canonical: "/policies" },
+  alternates: { canonical: `${CANONICAL_SITE_ORIGIN}/policies` },
 };
 
 export default function PoliciesPage() {

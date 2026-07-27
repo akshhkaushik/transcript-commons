@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getTranscripts } from "./transcript-data";
+import { CANONICAL_SITE_ORIGIN } from "./site-url";
 import {
   excerpt,
   searchTranscripts,
@@ -11,6 +12,7 @@ export const metadata: Metadata = {
   title: "Transcript Commons — YouTube, made searchable",
   description:
     "A free, public, agent-readable library of timestamped YouTube transcripts.",
+  alternates: { canonical: CANONICAL_SITE_ORIGIN },
 };
 
 function formatDuration(seconds: number) {
