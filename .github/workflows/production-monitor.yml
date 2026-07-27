@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Verify public product surfaces
         id: smoke
@@ -30,7 +30,7 @@ jobs:
 
       - name: Open, update, or close monitoring issue
         if: always()
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         env:
           MONITOR_OUTCOME: ${{ steps.smoke.outcome }}
         with:
