@@ -19,6 +19,8 @@ Every transcript page includes source provenance, timestamps, topics, and the co
 ## Index
 - Website: ${origin}/
 - JSON index: ${origin}/api/transcripts
+- Search API: ${origin}/api/search?q=diabetes
+- Record schema: ${origin}/transcript-schema.json
 - Sitemap: ${origin}/sitemap.xml
 
 ## Transcripts
@@ -26,9 +28,16 @@ ${entries || "No transcripts have been published yet."}
 
 ## Citation guidance
 Attribute claims to the original speaker/channel and link to the Transcript Commons page, which links back to the source YouTube video. Timestamps are expressed as offsets from the beginning of the source video.
+
+## Reliability
+Each record declares whether its text came from creator captions, automatic captions, or local ASR. Automated medical transcripts may contain errors in names, dosages, and numerical claims; consult the linked source at the cited timestamp before relying on a high-stakes claim.
 `;
 
   return new Response(body, {
-    headers: { "content-type": "text/plain; charset=utf-8" },
+    headers: {
+      "content-type": "text/plain; charset=utf-8",
+      "cache-control": "public, max-age=300, s-maxage=3600",
+      "x-robots-tag": "index, follow",
+    },
   });
 }

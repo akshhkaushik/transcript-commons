@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getTranscripts } from "./transcript-data";
+import {
+  excerpt,
+  searchTranscripts,
+  timestamp,
+} from "./transcript-utils";
 
 export const metadata: Metadata = {
   title: "Transcript Commons — YouTube, made searchable",
@@ -25,20 +30,7 @@ export default async function Home({
   const { q = "" } = await searchParams;
   const transcripts = getTranscripts();
   const query = q.trim().toLowerCase();
-  const results = query
-    ? transcripts.filter((video) =>
-        [
-          video.title,
-          video.channel,
-          video.description,
-          video.topics.join(" "),
-          video.segments.map((segment) => segment.text).join(" "),
-        ]
-          .join(" ")
-          .toLowerCase()
-          .includes(query),
-      )
-    : transcripts;
+  const results = searchTranscripts(transcripts, query);
   const totalHours = Math.round(
     transcripts.reduce((total, video) => total + video.durationSeconds, 0) / 3600,
   );
@@ -89,9 +81,9 @@ export default async function Home({
           </form>
           <div className="quick-links" aria-label="Quick topic links">
             <span>START WITH</span>
-            <a href="/?q=diabetes">Diabetes</a>
-            <a href="/?q=cardiology">Cardiology</a>
-            <a href="/?q=mental+health">Mental health</a>
+            <Link href="/?q=diabetes">Diabetes</Link>
+            <Link href="/?q=cardiology">Cardiology</Link>
+            <Link href="/?q=mental+health">Mental health</Link>
           </div>
         </div>
 
@@ -147,10 +139,10 @@ export default async function Home({
 
         {results.length ? (
           <div className="transcript-grid">
-            {results.map((video) => (
+            {results.map(({ transcript: video, match }, resultIndex) => (
               <article className="transcript-card" key={video.videoId}>
                 <div className="card-number" aria-hidden="true">
-                  {String(results.indexOf(video) + 1).padStart(2, "0")}
+                  {String(resultIndex + 1).padStart(2, "0")}
                 </div>
                 <div>
                   <p className="card-meta">
@@ -161,6 +153,12 @@ export default async function Home({
                     <Link href={`/videos/${video.videoId}`}>{video.title}</Link>
                   </h3>
                   <p className="card-description">{video.description}</p>
+                  {match ? (
+                    <p className="search-match">
+                      <span>{timestamp(match.start)}</span>
+                      {excerpt(match.text, query)}
+                    </p>
+                  ) : null}
                   <div className="topic-list">
                     {video.topics.map((topic) => (
                       <span key={topic}>{topic}</span>
@@ -263,6 +261,7 @@ export default async function Home({
         <div className="format-links">
           <a href="/llms.txt">LLMS.TXT ↗</a>
           <a href="/api/transcripts">JSON INDEX ↗</a>
+          <a href="/api/search?q=diabetes">SEARCH API ↗</a>
           <a href="/sitemap.xml">SITEMAP ↗</a>
         </div>
       </section>
