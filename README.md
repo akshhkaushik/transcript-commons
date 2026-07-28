@@ -253,3 +253,6 @@ https://transcript-commons.vercel.app/sitemap.xml
 
 See [docs/OPERATIONS.md](docs/OPERATIONS.md) for the release, review, incident,
 and search-engine procedures.
+
+The evidence-backed roadmap status is maintained in
+[docs/COMPLETION_AUDIT.md](docs/COMPLETION_AUDIT.md).
