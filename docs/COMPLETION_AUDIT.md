@@ -6,6 +6,10 @@ This audit tests the requested end state against source, generated artifacts,
 public runtime responses, repository state, and automation runs. A green test
 alone is not used as proof for a requirement it does not exercise.
 
+Overall status: **core implementation complete**. The owner explicitly deferred
+the optional Google Search Console and Bing Webmaster Tools dashboard setup on
+2026-07-28. Public sitemap discovery and IndexNow notification remain active.
+
 ## Requirement audit
 
 | Requirement | Authoritative evidence | Result |
@@ -31,8 +35,8 @@ alone is not used as proof for a requirement it does not exercise.
 | Deploy to the user's Vercel account | The linked `aksh08022006` project is ready at `https://transcript-commons.vercel.app` | Complete |
 | Deploy the Sites mirror | Sites version 4 is live at `https://transcript-commons.rurradvisors.chatgpt.site` with environment revision 1 | Complete |
 | Notify Bing and participating engines | IndexNow accepted all 14 canonical URLs with HTTP 200; the automatic GitHub workflow also completed successfully | Complete |
-| Submit sitemap in Google Search Console | Search Console is currently signed out; URL-prefix verification and dashboard submission require the site owner's Google authorization | **Pending user authorization** |
-| Submit sitemap in Bing Webmaster Tools | Bing Webmaster Tools is currently signed out; dashboard submission/import requires the site owner's Microsoft authorization | **Pending user authorization** |
+| Submit sitemap in Google Search Console | The sitemap remains publicly declared in `robots.txt`; the owner chose to leave optional Search Console account setup aside | **Deferred by owner** |
+| Submit sitemap in Bing Webmaster Tools | IndexNow already notified Bing successfully; the owner chose to leave optional Webmaster Tools account setup aside | **Deferred by owner** |
 
 ## Verification gates
 
