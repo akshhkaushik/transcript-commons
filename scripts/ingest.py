@@ -33,6 +33,32 @@ from transcript_pipeline import (
 )
 
 
+def audio_fallback_allowed(
+    metadata: dict[str, Any],
+    mode: str,
+) -> tuple[bool, str]:
+    """Return whether local ASR may download this video's audio."""
+    if mode == "all":
+        return True, "operator-authorized"
+    if mode == "off":
+        return False, "disabled"
+
+    license_name = str(metadata.get("license") or "").lower()
+    if "creative commons" in license_name or "cc by" in license_name:
+        return True, "creative-commons"
+
+    permitted_channels = {
+        value.strip()
+        for value in os.environ.get("PERMISSIONED_CHANNEL_IDS", "").split(",")
+        if value.strip()
+    }
+    channel_id = str(metadata.get("channel_id") or metadata.get("uploader_id") or "")
+    if channel_id and channel_id in permitted_channels:
+        return True, "permissioned-channel"
+
+    return False, "permission-required"
+
+
 def download_caption_track(
     yt_dlp: str,
     url: str,
@@ -199,6 +225,7 @@ def ingest(args: argparse.Namespace) -> dict[str, Any]:
     model_used = None
     engine_used = None
     caption_language = None
+    asr_authorization = None
 
     with tempfile.TemporaryDirectory(prefix="transcript-commons-") as temp:
         workdir = Path(temp)
@@ -223,6 +250,18 @@ def ingest(args: argparse.Namespace) -> dict[str, Any]:
                 selected_track = None
 
         if not selected_track:
+            fallback_mode = "off" if args.no_asr_fallback else args.audio_fallback
+            allowed, asr_authorization = audio_fallback_allowed(
+                metadata,
+                fallback_mode,
+            )
+            if not allowed:
+                raise RuntimeError(
+                    "No usable captions were found. Local audio transcription is "
+                    "disabled unless the video is Creative Commons, its channel is "
+                    "listed in PERMISSIONED_CHANNEL_IDS, or the operator explicitly "
+                    "uses --audio-fallback all after confirming permission."
+                )
             audio = download_audio(
                 yt_dlp,
                 args.url,
@@ -263,11 +302,13 @@ def ingest(args: argparse.Namespace) -> dict[str, Any]:
 
     source_url = canonical_youtube_url(video_id)
     fetched_at = utc_now()
+    channel = metadata.get("channel") or metadata.get("uploader") or "Unknown"
+    license_name = metadata.get("license") or "unknown"
     record: dict[str, Any] = {
         "schemaVersion": 1,
         "videoId": video_id,
         "title": metadata.get("title") or video_id,
-        "channel": metadata.get("channel") or metadata.get("uploader") or "Unknown",
+        "channel": channel,
         "channelUrl": metadata.get("channel_url")
         or metadata.get("uploader_url")
         or "",
@@ -278,6 +319,8 @@ def ingest(args: argparse.Namespace) -> dict[str, Any]:
         "publishedAt": iso_date(metadata.get("upload_date")),
         "durationSeconds": duration_seconds,
         "language": args.language,
+        "license": license_name,
+        "attribution": f"{channel} — original YouTube source: {source_url}",
         "topics": infer_topics(metadata, args.topic),
         "transcriptSource": transcript_source,
         "captionLanguage": caption_language,
@@ -295,6 +338,7 @@ def ingest(args: argparse.Namespace) -> dict[str, Any]:
             "captionLanguage": caption_language,
             "engine": engine_used,
             "model": model_used,
+            "asrAuthorization": asr_authorization,
             "contentSha256": transcript_hash(segments),
             "metadataSeconds": round(metadata_seconds, 3),
             "processingSeconds": round(processing_seconds, 3),
@@ -333,7 +377,16 @@ def parser() -> argparse.ArgumentParser:
     command.add_argument(
         "--no-asr-fallback",
         action="store_true",
-        help="Fail instead of using local ASR when caption retrieval fails.",
+        help="Deprecated alias for --audio-fallback off.",
+    )
+    command.add_argument(
+        "--audio-fallback",
+        choices=["off", "permissioned", "all"],
+        default=os.environ.get("AUDIO_FALLBACK", "permissioned"),
+        help=(
+            "Audio-download policy when captions are unavailable. 'permissioned' "
+            "accepts Creative Commons videos and PERMISSIONED_CHANNEL_IDS."
+        ),
     )
     command.add_argument("--refresh", action="store_true")
     command.add_argument("--topic", action="append", default=[])

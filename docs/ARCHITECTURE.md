@@ -1,56 +1,47 @@
 # Architecture
 
-## Data flow
+Transcript Registry is the public system of record. Transcript Commons is a
+local worker and corpus toolkit.
 
 ```text
-YouTube search / playlist / channel
-                |
-                v
-        deduplicated URL queue
-                |
-                v
-         metadata + track audit
-          /                 \
- creator/automatic       no captions
-     JSON3                  |
-       |               local audio
-       |                  + ASR
-       \                  /
-        normalization + validation
-                |
-                v
-      content/transcripts.json
-                |
-        Next.js / vinext build
-                |
-       HTML + TXT + JSON + APIs
-                |
-       sitemap / robots / llms.txt
+ChatGPT / Claude / browser
+          |
+          v
+Registry search.txt / search.json  <----------------------+
+          |                                               |
+    results exist?                                        |
+       /       \                                          |
+     yes       no: deduplicated topic job                 |
+      |                    |                              |
+ transcript page           v                              |
+                    Commons local worker                   |
+                 discover captioned videos                 |
+                           |                              |
+                    Registry video jobs                    |
+                           |                              |
+              captions first; permissioned ASR             |
+                           |                              |
+                    validate + provenance                  |
+                           |                              |
+                           +---- publish to Neon -----------+
 ```
 
-## Trust model
+## Responsibilities
 
-Every transcript retains the original YouTube URL and a timestamp for each
-block. `transcriptSource` distinguishes creator captions, automatic captions,
-and local ASR. `provenance.contentSha256` makes accidental transcript changes
-detectable. Automated medical transcripts carry an explicit warning until
-reviewed.
+- **Registry:** Neon storage, full-text search, topic/video queues, rate
+  limiting, stable HTML/TXT/JSON pages, sitemap, robots, and `llms.txt`.
+- **Commons:** YouTube discovery, caption retrieval, local MLX Whisper or
+  whisper.cpp compute, record validation, dataset/topic catalogs, and Registry
+  publishing.
+- **Vercel:** serves text and APIs. It does not download media or run Whisper.
 
-This provenance explains where text came from; it does not make the claims in
-the source video medically correct. Research users must evaluate the original
-speaker, evidence, and context.
+## Safety and trust
 
-## Storage
+Every record retains the source URL, channel attribution, transcript method,
+timestamps, and a content hash. Caption text and ASR can be wrong, so agents
+should link the Registry page and check the original timestamp for high-stakes
+claims.
 
-The healthcare-first version keeps reviewed records in a version-controlled
-JSON collection. This makes every public deployment deterministic and avoids a
-hosted database or account system. If the collection grows beyond practical
-repository/build limits, the record contract can move unchanged to object
-storage plus a generated search index.
-
-## Agent discovery
-
-The primary agent surface is ordinary semantic, server-rendered HTML. Each
-record also publishes plain text and JSON, advertises those alternate formats,
-appears in the sitemap and `llms.txt`, and exposes complete provenance.
-`OAI-SearchBot` and Claude search crawlers are explicitly allowed.
+Audio fallback is permission-gated. The default accepts Creative Commons
+videos and channels listed in `PERMISSIONED_CHANNEL_IDS`; broader processing
+requires an explicit operator decision.

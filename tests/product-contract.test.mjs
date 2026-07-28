@@ -8,7 +8,7 @@ async function source(path) {
   return readFile(new URL(path, root), "utf8");
 }
 
-test("publishes the agent discovery surfaces", async () => {
+test("wires agent search to the canonical Registry", async () => {
   const [robots, sitemap, llms, api, search, schema, status, health, contribute] = await Promise.all([
     source("app/robots.ts"),
     source("app/sitemap.ts"),
@@ -31,13 +31,13 @@ test("publishes the agent discovery surfaces", async () => {
   assert.match(sitemap, /\/policies/);
   assert.match(sitemap, /\/status/);
   assert.match(sitemap, /\/contribute/);
-  assert.match(llms, /Plain-text endpoint/i);
-  assert.match(llms, /Search API/i);
-  assert.match(llms, /Static BM25 index/i);
+  assert.match(llms, /transcript-registry\.vercel\.app/);
+  assert.match(llms, /search\.txt/);
+  assert.match(llms, /automatically creates a deduplicated topic job/i);
   assert.match(api, /plainTextUrl/);
   assert.match(api, /jsonObjectUrl/);
-  assert.match(search, /searchTranscripts/);
-  assert.match(search, /BM25/);
+  assert.match(search, /transcript-registry\.vercel\.app/);
+  assert.match(search, /\/search\.json/);
   assert.match(schema, /creator-captions/);
   assert.match(status, /Every queued video is published/);
   assert.match(health, /publishedCount/);
@@ -68,11 +68,31 @@ test("uses captions first and local ASR only as fallback", async () => {
   assert.match(ingest, /mlx_whisper\.transcribe/);
   assert.match(ingest, /whisper-cli/);
   assert.match(ingest, /force_local/);
+  assert.match(ingest, /PERMISSIONED_CHANNEL_IDS/);
+  assert.match(ingest, /--audio-fallback/);
   assert.match(pipeline, /creator-captions/);
   assert.match(pipeline, /transcript_hash/);
   assert.match(ingest, /contentSha256/);
   assert.match(batch, /retrying/);
   assert.match(discover, /ytsearch/);
+});
+
+test("ships the Registry worker and broad-topic corpus tools", async () => {
+  const [worker, client, topics, datasets, architecture] = await Promise.all([
+    source("scripts/registry_worker.py"),
+    source("scripts/registry_api.py"),
+    source("topics/broad-topics.txt"),
+    source("datasets/youtube-datasets.json"),
+    source("docs/ARCHITECTURE.md"),
+  ]);
+  assert.match(worker, /api\/worker\/topics\/claim/);
+  assert.match(worker, /api\/worker\/claim/);
+  assert.match(client, /api\/admin\/import|registry_record/);
+  assert.match(topics, /linear algebra/i);
+  assert.match(topics, /public health/i);
+  assert.match(datasets, /YouTube-Commons/);
+  assert.match(datasets, /recommended-bulk-import/);
+  assert.match(architecture, /Transcript Registry is the public system of record/);
 });
 
 test("publishes operations, correction, and monitoring workflows", async () => {

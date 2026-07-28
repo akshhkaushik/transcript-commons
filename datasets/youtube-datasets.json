@@ -1,0 +1,65 @@
+[
+  {
+    "name": "PleIAs/YouTube-Commons",
+    "url": "https://huggingface.co/datasets/PleIAs/YouTube-Commons",
+    "scale": "2,063,066 CC-BY videos; 22,709,724 multilingual transcripts",
+    "containsFullTranscripts": true,
+    "license": "CC-BY with per-video attribution",
+    "registryUse": "recommended-bulk-import",
+    "notes": "Best launch and backfill source. Preserve video, channel, date, and license attribution."
+  },
+  {
+    "name": "ESPnet/YODAS",
+    "url": "https://huggingface.co/datasets/espnet/yodas",
+    "scale": "369,510 hours across more than 100 languages",
+    "containsFullTranscripts": false,
+    "license": "Dataset card: CC-BY-3.0",
+    "registryUse": "conditional-reconstruction",
+    "notes": "Contains timestamped YouTube audio utterances and manual/automatic captions. Reconstruct only when source identity and attribution remain available."
+  },
+  {
+    "name": "HowTo100M",
+    "url": "https://www.di.ens.fr/willow/research/howto100m/",
+    "scale": "1.22 million narrated instructional videos; 136 million clips",
+    "containsFullTranscripts": true,
+    "license": "Research dataset; no blanket public transcript-republication grant",
+    "registryUse": "discovery-only",
+    "notes": "Excellent instructional topic coverage, but use IDs/queries for discovery and re-check each source license before publication."
+  },
+  {
+    "name": "YouTube-8M",
+    "url": "https://research.google.com/youtube8m/",
+    "scale": "Millions of videos and thousands of machine-generated labels",
+    "containsFullTranscripts": false,
+    "license": "Dataset features: CC-BY-4.0",
+    "registryUse": "topic-taxonomy-only",
+    "notes": "Useful for broad category vocabulary, but IDs are anonymized in downloadable feature files and it does not provide transcripts."
+  },
+  {
+    "name": "ActivityNet Captions",
+    "url": "https://activity-net.org/download.html",
+    "scale": "About 20,000 YouTube videos and 100,000 temporal descriptions",
+    "containsFullTranscripts": false,
+    "license": "Annotations and source videos have separate terms",
+    "registryUse": "discovery-only",
+    "notes": "Descriptions are annotations, not verbatim transcripts. Re-check source availability and license."
+  },
+  {
+    "name": "YouCook2",
+    "url": "https://youcook2.eecs.umich.edu/",
+    "scale": "2,000 instructional cooking videos across 89 recipes",
+    "containsFullTranscripts": false,
+    "license": "Annotations only; source videos are not redistributed",
+    "registryUse": "discovery-only",
+    "notes": "Useful cooking taxonomy and temporal procedure annotations, not a full transcript corpus."
+  },
+  {
+    "name": "Kinetics-700",
+    "url": "https://github.com/cvdfoundation/kinetics-dataset",
+    "scale": "At least 700 clips for each of 700 human-action classes",
+    "containsFullTranscripts": false,
+    "license": "IDs/annotations; source media remains on YouTube",
+    "registryUse": "topic-taxonomy-only",
+    "notes": "Useful action vocabulary, but ten-second clips generally do not provide research-grade spoken transcripts."
+  }
+]

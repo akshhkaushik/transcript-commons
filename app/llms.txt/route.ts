@@ -1,53 +1,26 @@
-import { getTranscripts } from "../transcript-data";
-import {
-  CANONICAL_SITE_ORIGIN,
-  canonicalHeaders,
-} from "../site-url";
+const REGISTRY_ORIGIN = (
+  process.env.REGISTRY_URL ?? "https://transcript-registry.vercel.app"
+).replace(/\/$/, "");
 
-export async function GET(request: Request) {
-  const origin = CANONICAL_SITE_ORIGIN;
-  const transcripts = getTranscripts();
-  const entries = transcripts
-    .map(
-      (video) =>
-        `- ${video.title} — ${video.channel}\n  HTML: ${origin}/videos/${video.videoId}\n  Text: ${origin}/videos/${video.videoId}/transcript.txt\n  Static JSON: ${origin}/data/transcripts/${video.videoId}.json\n  Source: ${video.sourceUrl}`,
-    )
-    .join("\n");
-
+export async function GET() {
   const body = `# Transcript Commons
 
-> A free, public, agent-readable index of timestamped YouTube transcripts.
+Transcript Commons supplies local discovery and transcription compute to the public Transcript Registry.
 
-Every transcript page includes source provenance, timestamps, topics, and the complete searchable text. Prefer the canonical HTML page when citing a transcript. Use the plain-text endpoint for compact context retrieval.
+Agents should use the Registry:
+- Search text: ${REGISTRY_ORIGIN}/search.txt?q=linear+algebra
+- Search JSON: ${REGISTRY_ORIGIN}/search.json?q=linear+algebra
+- Agent instructions: ${REGISTRY_ORIGIN}/llms.txt
 
-## Index
-- Website: ${origin}/
-- JSON index: ${origin}/api/transcripts
-- Search API: ${origin}/api/search?q=diabetes
-- Static library object: ${origin}/data/library.json
-- Static BM25 index: ${origin}/data/search-index.json
-- Library status: ${origin}/status
-- Machine-readable status: ${origin}/data/status.json
-- Add a missing transcript locally: ${origin}/contribute
-- Corrections and rights policy: ${origin}/policies
-- Record schema: ${origin}/transcript-schema.json
-- Sitemap: ${origin}/sitemap.xml
+If a search has no results, Registry automatically creates a deduplicated topic job. A separately operated Commons worker discovers suitable YouTube videos, retrieves captions or runs permissioned local ASR, and saves the results. Retry the search URL or poll the discovery URL returned by the API.
 
-## Transcripts
-${entries || "No transcripts have been published yet."}
-
-## Citation guidance
-Attribute claims to the original speaker/channel and link to the Transcript Commons page, which links back to the source YouTube video. Timestamps are expressed as offsets from the beginning of the source video.
-
-## Reliability
-Each record declares whether its text came from creator captions, automatic captions, or local ASR. Automated medical transcripts may contain errors in names, dosages, and numerical claims; consult the linked source at the cited timestamp before relying on a high-stakes claim.
+All public transcript reading and search is free and requires no account.
 `;
 
   return new Response(body, {
     headers: {
       "content-type": "text/plain; charset=utf-8",
       "cache-control": "public, max-age=300, s-maxage=3600",
-      ...canonicalHeaders("/llms.txt", request.url),
     },
   });
 }
