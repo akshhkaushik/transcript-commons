@@ -21,6 +21,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "yearly",
       priority: 0.5,
     },
+    {
+      url: `${origin}/contribute`,
+      changeFrequency: "monthly",
+      priority: 0.6,
+    },
     ...getTranscripts().map((video) => ({
       url: `${origin}/videos/${video.videoId}`,
       lastModified: new Date(video.ingestedAt),

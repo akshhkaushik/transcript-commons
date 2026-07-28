@@ -27,14 +27,25 @@ function hours(seconds: number) {
   return (seconds / 3600).toFixed(1);
 }
 
-function label(value: string) {
-  return value.replaceAll("-", " ");
+const sourceLabels: Record<string, string> = {
+  "creator-captions": "Provided captions",
+  "auto-captions": "Automatic captions",
+  "local-asr": "Local transcription",
+};
+
+const reviewLabels: Record<string, string> = {
+  reviewed: "Checked against the video",
+  "automated-unreviewed": "Needs a manual check",
+};
+
+function label(value: string, labels: Record<string, string>) {
+  return labels[value] ?? value.replaceAll("-", " ");
 }
 
 export const metadata: Metadata = {
   title: "Library status",
   description:
-    "Public ingestion, provenance, review, and queue status for Transcript Commons.",
+    "See how many transcripts are available and how they were created.",
   alternates: { canonical: `${CANONICAL_SITE_ORIGIN}/status` },
 };
 
@@ -50,18 +61,17 @@ export default function StatusPage() {
         </Link>
         <div className="nav-links">
           <Link href="/">Library</Link>
-          <Link href="/policies">Policies</Link>
-          <a href="/llms.txt">For agents ↗</a>
+          <Link href="/contribute">Add a transcript</Link>
+          <Link href="/policies">Corrections</Link>
         </div>
       </nav>
 
       <header className="info-hero">
-        <p className="eyebrow">PUBLIC OPERATIONS</p>
-        <h1>Library status.</h1>
+        <p className="eyebrow">WHAT IS IN THE LIBRARY?</p>
+        <h1>Library at a glance.</h1>
         <p>
-          The ingestion queue, transcript provenance, and editorial review state
-          are published so people and research agents can judge the collection,
-          not merely search it.
+          See how many videos are ready, how the text was made, and whether it
+          has been checked against the original video.
         </p>
       </header>
 
@@ -86,12 +96,12 @@ export default function StatusPage() {
 
       <div className="status-grid">
         <section>
-          <p className="eyebrow">PROVENANCE</p>
-          <h2>How text was produced</h2>
+          <p className="eyebrow">HOW THE TEXT WAS MADE</p>
+          <h2>Transcript sources</h2>
           <dl className="status-list">
             {Object.entries(status.sourceCounts).map(([source, count]) => (
               <div key={source}>
-                <dt>{label(source)}</dt>
+                <dt>{label(source, sourceLabels)}</dt>
                 <dd>{count}</dd>
               </div>
             ))}
@@ -99,26 +109,26 @@ export default function StatusPage() {
         </section>
 
         <section>
-          <p className="eyebrow">EDITORIAL STATE</p>
-          <h2>Review queue</h2>
+          <p className="eyebrow">ACCURACY CHECK</p>
+          <h2>What has been checked</h2>
           <dl className="status-list">
             {Object.entries(status.reviewCounts).map(([reviewState, count]) => (
               <div key={reviewState}>
-                <dt>{label(reviewState)}</dt>
+                <dt>{label(reviewState, reviewLabels)}</dt>
                 <dd>{count}</dd>
               </div>
             ))}
           </dl>
           <p className="status-note">
-            Automated medical transcripts remain visibly unreviewed until a
-            reviewer checks names, dosages, units, numbers, and source timing.
+            Automatic text can mishear names and numbers. Records stay marked
+            as needing a check until someone compares them with the video.
           </p>
         </section>
       </div>
 
       <section className="queue-section">
         <div>
-          <p className="eyebrow">BATCH QUEUE</p>
+          <p className="eyebrow">VIDEOS WAITING TO BE ADDED</p>
           <h2>
             {status.pendingCount
               ? `${status.pendingCount} source videos remain.`
@@ -126,8 +136,7 @@ export default function StatusPage() {
           </h2>
           <p>
             {status.queuedCount} unique source video
-            {status.queuedCount === 1 ? " is" : "s are"} tracked across the
-            repository queues.
+            {status.queuedCount === 1 ? " is" : "s are"} currently listed.
           </p>
         </div>
         {status.pending.length ? (
@@ -146,25 +155,6 @@ export default function StatusPage() {
         )}
       </section>
 
-      <section className="operations-links">
-        <div>
-          <h2>Machine-readable operations</h2>
-          <p>
-            Status and library objects are static, cacheable, and usable without
-            JavaScript, authentication, or an API key.
-          </p>
-        </div>
-        <div className="format-links">
-          <a href="/api/health">HEALTH CHECK ↗</a>
-          <a href="/data/status.json">STATUS JSON ↗</a>
-          <a href="/data/library.json">LIBRARY JSON ↗</a>
-          <a href="/data/search-index.json">SEARCH INDEX ↗</a>
-          <a href="https://github.com/akshhkaushik/transcript-commons/actions">
-            AUTOMATION RUNS ↗
-          </a>
-        </div>
-      </section>
-
       <footer>
         <Link className="wordmark footer-mark" href="/">
           <span className="wordmark-mark" aria-hidden="true">
@@ -172,14 +162,8 @@ export default function StatusPage() {
           </span>
           <span>TRANSCRIPT COMMONS</span>
         </Link>
-        <p>
-          Generated{" "}
-          {status.generatedAt
-            ? new Date(status.generatedAt).toISOString().slice(0, 10)
-            : "from the current library"}
-          .
-        </p>
-        <Link href="/policies">Corrections and rights →</Link>
+        <p>Want another video here? Run the project on your computer.</p>
+        <Link href="/contribute">Add a transcript →</Link>
       </footer>
     </main>
   );

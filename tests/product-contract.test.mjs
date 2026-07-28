@@ -9,7 +9,7 @@ async function source(path) {
 }
 
 test("publishes the agent discovery surfaces", async () => {
-  const [robots, sitemap, llms, api, search, schema, status, health] = await Promise.all([
+  const [robots, sitemap, llms, api, search, schema, status, health, contribute] = await Promise.all([
     source("app/robots.ts"),
     source("app/sitemap.ts"),
     source("app/llms.txt/route.ts"),
@@ -18,6 +18,7 @@ test("publishes the agent discovery surfaces", async () => {
     source("public/transcript-schema.json"),
     source("app/status/page.tsx"),
     source("app/api/health/route.ts"),
+    source("app/contribute/page.tsx"),
   ]);
 
   assert.match(robots, /OAI-SearchBot/);
@@ -29,6 +30,7 @@ test("publishes the agent discovery surfaces", async () => {
   assert.match(sitemap, /getTranscripts/);
   assert.match(sitemap, /\/policies/);
   assert.match(sitemap, /\/status/);
+  assert.match(sitemap, /\/contribute/);
   assert.match(llms, /Plain-text endpoint/i);
   assert.match(llms, /Search API/i);
   assert.match(llms, /Static BM25 index/i);
@@ -39,6 +41,9 @@ test("publishes the agent discovery surfaces", async () => {
   assert.match(schema, /creator-captions/);
   assert.match(status, /Every queued video is published/);
   assert.match(health, /publishedCount/);
+  assert.match(contribute, /Your computer does the work/);
+  assert.match(contribute, /content\/transcripts\.json/);
+  assert.match(contribute, /whisper-cpp/);
 });
 
 test("keeps complete transcript text server-rendered", async () => {
@@ -78,8 +83,8 @@ test("publishes operations, correction, and monitoring workflows", async () => {
     source(".github/workflows/production-monitor.yml"),
     source("scripts/build_public_data.py"),
   ]);
-  assert.match(policies, /Takedowns and publisher requests/);
-  assert.match(policies, /Medical accuracy/);
+  assert.match(policies, /Ask for removal/);
+  assert.match(policies, /Check important information/);
   assert.match(review, /mark_reviewed/);
   assert.match(review, /contentSha256/);
   assert.match(batch, /INGEST_ALERT_WEBHOOK/);

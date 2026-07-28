@@ -508,6 +508,92 @@ input {
   letter-spacing: 0.1em;
 }
 
+.local-section {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.75fr);
+  gap: 7vw;
+  align-items: center;
+  padding: 96px 4vw;
+  border-bottom: 1px solid var(--ink);
+  background: var(--red);
+}
+
+.local-section h2,
+.saved-result h2 {
+  max-width: 760px;
+  margin: 0 0 24px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2.8rem, 6vw, 6.2rem);
+  font-weight: 400;
+  letter-spacing: -0.06em;
+  line-height: 0.95;
+}
+
+.local-section > div > p:not(.eyebrow) {
+  max-width: 680px;
+  line-height: 1.65;
+}
+
+.local-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 34px;
+}
+
+.primary-action,
+.secondary-action {
+  display: inline-flex;
+  min-height: 50px;
+  align-items: center;
+  padding: 0 18px;
+  border: 2px solid var(--ink);
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.09em;
+}
+
+.primary-action {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.secondary-action {
+  background: transparent;
+}
+
+.primary-action:hover,
+.secondary-action:hover {
+  transform: translateY(-2px);
+}
+
+.command-card {
+  padding: 32px;
+  border: 2px solid var(--ink);
+  background: var(--paper);
+  box-shadow: 10px 10px 0 var(--ink);
+}
+
+.command-card > span {
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+}
+
+.command-card code {
+  display: block;
+  margin: 26px 0;
+  overflow-wrap: anywhere;
+  font: 700 0.9rem/1.6 monospace;
+}
+
+.command-card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
 .agent-section {
   padding: 110px 4vw;
   background: var(--ink);
@@ -577,6 +663,107 @@ input {
   font-family: Georgia, "Times New Roman", serif;
   font-size: 1.15rem;
   line-height: 1.6;
+}
+
+.contribute-note {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.35fr) minmax(0, 0.65fr);
+  gap: 40px;
+  padding: 42px 4vw;
+  border-bottom: 1px solid var(--ink);
+  background: var(--red);
+}
+
+.contribute-note strong {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.8rem;
+  font-weight: 400;
+}
+
+.contribute-note p {
+  max-width: 740px;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.setup-steps > section {
+  display: grid;
+  grid-template-columns: 80px minmax(0, 980px);
+  gap: 24px;
+  padding: 64px 4vw;
+  border-bottom: 1px solid var(--ink);
+}
+
+.setup-steps > section > span {
+  color: var(--red);
+  font: 800 1rem/1 monospace;
+}
+
+.setup-steps h2 {
+  margin: 0 0 20px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2.2rem, 4vw, 4.6rem);
+  font-weight: 400;
+  letter-spacing: -0.05em;
+  line-height: 1;
+}
+
+.setup-steps h3 {
+  margin: 0 0 12px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.45rem;
+  font-weight: 400;
+}
+
+.setup-steps p {
+  max-width: 780px;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.setup-steps pre {
+  max-width: 100%;
+  margin: 24px 0;
+  padding: 22px;
+  overflow-x: auto;
+  border: 1px solid #4d4942;
+  background: var(--ink);
+  color: var(--paper);
+  font: 600 0.82rem/1.7 monospace;
+}
+
+.setup-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.setup-options article {
+  padding: 26px;
+  border: 1px solid var(--ink);
+  background: #fffdf7;
+}
+
+.inline-code {
+  padding: 2px 5px;
+  background: rgba(23, 21, 18, 0.08);
+  font: 700 0.9em/1.5 monospace;
+}
+
+.saved-result {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.8fr);
+  gap: 7vw;
+  padding: 82px 4vw;
+  border-bottom: 1px solid var(--ink);
+  background: var(--sage);
+}
+
+.saved-result ul {
+  margin: 0;
+  padding-left: 22px;
+  line-height: 2;
 }
 
 .policy-grid section {
@@ -805,8 +992,11 @@ footer {
 
   .section-heading,
   .process-section,
+  .local-section,
   .status-grid,
-  .operations-links {
+  .operations-links,
+  .saved-result,
+  .contribute-note {
     display: block;
   }
 
@@ -850,6 +1040,16 @@ footer {
   .operations-links .format-links {
     margin-top: 34px;
   }
+
+  .command-card,
+  .saved-result ul,
+  .contribute-note p {
+    margin-top: 36px;
+  }
+
+  .setup-options {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 600px) {
@@ -884,6 +1084,7 @@ footer {
 
   .library-section,
   .agent-section,
+  .local-section,
   .process-intro,
   .info-hero {
     padding: 72px 5vw;
@@ -923,6 +1124,22 @@ footer {
   .policy-grid section {
     grid-template-columns: 42px 1fr;
     padding: 44px 5vw;
+  }
+
+  .setup-steps > section {
+    grid-template-columns: 38px minmax(0, 1fr);
+    gap: 12px;
+    padding: 48px 5vw;
+  }
+
+  .setup-steps pre {
+    padding: 16px;
+    font-size: 0.72rem;
+  }
+
+  .saved-result,
+  .contribute-note {
+    padding: 56px 5vw;
   }
 
   .status-metrics {

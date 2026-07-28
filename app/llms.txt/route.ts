@@ -28,6 +28,7 @@ Every transcript page includes source provenance, timestamps, topics, and the co
 - Static BM25 index: ${origin}/data/search-index.json
 - Library status: ${origin}/status
 - Machine-readable status: ${origin}/data/status.json
+- Add a missing transcript locally: ${origin}/contribute
 - Corrections and rights policy: ${origin}/policies
 - Record schema: ${origin}/transcript-schema.json
 - Sitemap: ${origin}/sitemap.xml

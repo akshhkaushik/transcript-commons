@@ -1,258 +1,120 @@
 # Transcript Commons
 
-A free, public, agent-readable library of timestamped YouTube transcripts.
-The project turns audiovisual material into an inspectable knowledge layer that
-humans can read and web-searching agents can discover, quote, and cite.
+Transcript Commons is a free website for reading and searching YouTube video
+transcripts. Every transcript includes timestamps and a link to the original
+video.
 
-The first collection is healthcare-focused. Nothing is gated behind an account,
-subscription, API key, or paid transcription service.
+Public website: [transcript-commons.vercel.app](https://transcript-commons.vercel.app)
 
-## What is implemented
+## Use the website
 
-- YouTube search, playlist, and channel discovery with deduplicated URL queues.
-- Creator captions first, automatic captions second, local ASR only when needed.
-- Apple Silicon transcription with MLX Whisper and a whisper.cpp alternative.
-- Rolling-caption deduplication and readable timestamped transcript blocks.
-- Resumable sequential batches with pacing, retries, state, and interruption recovery.
-- Per-record provenance, content hashes, review status, word counts, and quality warnings.
-- A human review queue that records reviewer, review time, notes, and a new content hash.
-- Server-rendered public transcript pages with source video, timestamps, topics, and citation guidance.
-- Plain-text and JSON versions of every record, including cacheable sharded data objects.
-- Generated BM25 full-text search used by both the website and machine-readable search endpoint.
-- A public library/queue/review dashboard and a no-cache health endpoint.
-- Desktop/webhook batch-failure alerts and scheduled GitHub production monitoring.
-- A public corrections, private takedown, source-rights, privacy, and medical-accuracy policy.
-- `robots.txt`, `sitemap.xml`, `llms.txt`, canonical URLs, alternate formats,
-  and `VideoObject` plus `Article` structured data.
-- Explicit crawler access for OAI-SearchBot, ChatGPT-User, Claude Search,
-  Perplexity, and ordinary search engines.
-- IndexNow submission for Bing and other participating search engines.
+1. Search for a topic or video.
+2. Open a result.
+3. Read the transcript or click a timestamp to check the original video.
 
-## Public surfaces
+There are no accounts, subscriptions, or payments.
 
-- `/videos/:videoId` - canonical transcript page
-- `/videos/:videoId/transcript.txt` - compact timestamped context
-- `/videos/:videoId/transcript.json` - complete structured record
-- `/api/transcripts` - library index with absolute URLs
-- `/api/search?q=diabetes` - ranked BM25 transcript and metadata search
-- `/api/health` - production health signal
-- `/data/library.json` - static, cacheable library index
-- `/data/search-index.json` - generated full-text index
-- `/data/status.json` - queue, provenance, and review counts
-- `/data/transcripts/:videoId.{json,txt}` - sharded transcript objects
-- `/status` - public ingestion and editorial dashboard
-- `/policies` - corrections, rights, takedown, privacy, and accuracy policy
-- `/transcript-schema.json` - public record schema
-- `/llms.txt` - agent discovery and citation guidance
-- `/sitemap.xml` and `/robots.txt` - crawler discovery
+## Add a video that is missing
 
-## Set up an Apple Silicon Mac
+Run this project on your own computer. It first tries the video's existing
+captions. If captions are unavailable, it can use a free local speech-to-text
+model.
 
-The helper installs `yt-dlp`, `ffmpeg`, and MLX Whisper:
+Nothing is uploaded automatically. The finished transcript is stored in your
+copy of the project, so you can keep it and use it again.
+
+### 1. Download the project
+
+Install Git, Python 3, and Node.js. Then run:
+
+```bash
+git clone https://github.com/akshhkaushik/transcript-commons.git
+cd transcript-commons
+npm install
+```
+
+### 2. Prepare your computer
+
+On an Apple Silicon Mac:
 
 ```bash
 chmod +x scripts/setup_mac.sh
 ./scripts/setup_mac.sh
+source .venv/bin/activate
 ```
 
-Or install the pieces manually:
+This installs the video tools and MLX Whisper.
+
+On Windows, Linux, or another Mac:
 
 ```bash
-brew install yt-dlp ffmpeg
-python3 -m venv .venv
-.venv/bin/python -m pip install mlx-whisper
-npm install
+python -m venv .venv
 ```
 
-`yt-dlp` uses YouTube's public web behavior rather than a stable official
-caption API. YouTube can change or rate-limit that behavior. The batch runner is
-sequential by default, records failures, and can be resumed.
-
-## Discover healthcare videos
-
-Search YouTube and create a queue:
+Activate it on macOS or Linux:
 
 ```bash
-.venv/bin/python scripts/discover.py \
-  --query "Mayo Clinic diabetes" \
-  --limit 25 \
-  --output queues/mayo-diabetes.txt
+source .venv/bin/activate
 ```
 
-Expand a playlist or channel:
+Or activate it in Windows PowerShell:
 
-```bash
-.venv/bin/python scripts/discover.py \
-  --url "https://www.youtube.com/playlist?list=PLAYLIST_ID" \
-  --limit 100 \
-  --output queues/healthcare-playlist.txt
+```powershell
+.venv\Scripts\Activate.ps1
 ```
 
-Discovery skips videos already present in `content/transcripts.json`.
-
-## Ingest one video
+Then install the caption tool:
 
 ```bash
-.venv/bin/python scripts/ingest.py \
-  "https://www.youtube.com/watch?v=VIDEO_ID"
+python -m pip install yt-dlp
 ```
 
-The pipeline:
+Install FFmpeg as well. For videos without captions, install
+[whisper.cpp](https://github.com/ggml-org/whisper.cpp) and download one of its
+models.
 
-1. Reads video metadata and caption availability.
-2. Selects English creator captions when available.
-3. Otherwise selects English automatic captions.
-4. If neither can be retrieved, downloads audio and runs MLX Whisper locally.
-5. Normalizes, validates, hashes, and publishes the transcript record.
-
-Force a local ASR benchmark:
+### 3. Add one video
 
 ```bash
-.venv/bin/python scripts/ingest.py \
-  "https://www.youtube.com/watch?v=VIDEO_ID" \
-  --force-local
+python scripts/ingest.py "https://www.youtube.com/watch?v=VIDEO_ID"
 ```
 
-Use whisper.cpp:
+On a system using whisper.cpp:
 
 ```bash
-.venv/bin/python scripts/ingest.py \
-  "https://www.youtube.com/watch?v=VIDEO_ID" \
+python scripts/ingest.py "YOUTUBE_URL" \
   --engine whisper-cpp \
   --whisper-cpp /path/to/whisper-cli \
   --whisper-cpp-model /path/to/ggml-small.en.bin
 ```
 
-## Run a resumable weekend batch
+Run the same command again with another URL to add more videos.
 
-```bash
-caffeinate -i .venv/bin/python scripts/ingest_batch.py \
-  queues/healthcare-starter.txt \
-  --delay 2 \
-  --retries 3 \
-  --notify \
-  --summary-file var/healthcare-summary.json
-```
+### 4. Open your saved library
 
-Progress is saved after every attempt in `var/ingest-state.json`. Re-running the
-same command skips completed and already-published videos. A network failure,
-caption failure, or interruption does not erase the queue.
-
-Set `INGEST_ALERT_WEBHOOK` to a Slack-compatible webhook (or pass
-`--alert-webhook`) to receive failed/interrupted batch summaries. `--notify`
-also produces a macOS desktop notification.
-
-For a long unattended run:
-
-```bash
-mkdir -p var
-nohup caffeinate -i .venv/bin/python scripts/ingest_batch.py \
-  queues/healthcare-starter.txt \
-  --delay 2 \
-  --retries 3 \
-  > var/healthcare-batch.log 2>&1 &
-```
-
-## Review and validate
-
-Healthcare transcripts must be treated as research aids, not medical advice.
-Before marking an automated transcript reviewed, check:
-
-- speaker and organization names;
-- medication names, dosages, lab values, and numerical claims;
-- source URL, language, title, and channel;
-- timestamps around any claim likely to be cited.
-
-Export the current review queue:
-
-```bash
-.venv/bin/python scripts/review_queue.py \
-  --format markdown \
-  --output var/review-queue.md
-```
-
-After checking a record against the source, record the review:
-
-```bash
-.venv/bin/python scripts/review_queue.py \
-  --mark-reviewed VIDEO_ID \
-  --reviewer "Reviewer name" \
-  --notes "Checked against the linked source."
-```
-
-Generate the sharded objects, status snapshot, and BM25 index:
+The transcript is saved in `content/transcripts.json`.
 
 ```bash
 npm run generate:data
+npm run dev:vercel
 ```
 
-Run the complete local verification:
+Open [http://localhost:3000](http://localhost:3000). Your saved transcripts will
+remain there until you remove them.
+
+## Share a transcript
+
+You can keep the result only on your computer, or contribute it to the public
+website with a GitHub pull request. Check names, numbers, and important details
+against the original video before sharing.
+
+The full browser guide is at
+[transcript-commons.vercel.app/contribute](https://transcript-commons.vercel.app/contribute).
+
+## Check the project
 
 ```bash
 npm test
 npm run lint
 npm run build:vercel
-npm run build
 ```
-
-## Local website
-
-```bash
-npm run dev:vercel
-```
-
-Open `http://localhost:3000`.
-
-The alternate Sites runtime uses:
-
-```bash
-npm run dev
-```
-
-## Publishing model
-
-Transcription never runs in a hosted function. It runs on the operator's Mac,
-then writes reviewed, versionable records into `content/transcripts.json`.
-Pushing those records publishes the same public HTML, text, JSON, search index,
-and sitemap on the configured deployments.
-
-`https://transcript-commons.vercel.app` is the sole canonical origin. Any mirror
-uses canonical links and `noindex, follow`, preventing duplicate search results.
-The scheduled GitHub monitor verifies the public HTML, APIs, crawler files,
-status, policy, and static data twice per hour. A failed run opens or updates a
-public issue and a recovery closes it.
-
-Search engines and AI products decide when to crawl and rank a page, so
-publication cannot guarantee immediate discovery. The project supplies the
-technical prerequisites: successful public responses, server-rendered text,
-stable canonical URLs, crawler permissions, sitemaps, structured metadata, and
-direct source attribution.
-
-## Rights and corrections
-
-Source video rights remain with the original publisher. Each record links to
-the YouTube source and declares how the transcript was produced. The live
-`/policies` page provides a public correction form and a private takedown
-contact. Medical transcripts are research aids, not medical advice.
-
-## Search-engine submission
-
-The sitemap is referenced by `robots.txt`. Every publish also sends canonical
-page URLs through IndexNow; run the same submission manually with:
-
-```bash
-python3 scripts/submit_indexnow.py --submit
-```
-
-Google Search Console and Bing Webmaster Tools still require site-owner account
-authorization for their dashboards. The canonical sitemap to submit is:
-
-```text
-https://transcript-commons.vercel.app/sitemap.xml
-```
-
-See [docs/OPERATIONS.md](docs/OPERATIONS.md) for the release, review, incident,
-and search-engine procedures.
-
-The evidence-backed roadmap status is maintained in
-[docs/COMPLETION_AUDIT.md](docs/COMPLETION_AUDIT.md).

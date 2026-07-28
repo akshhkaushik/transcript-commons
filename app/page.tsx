@@ -9,9 +9,9 @@ import {
 } from "./transcript-utils";
 
 export const metadata: Metadata = {
-  title: "Transcript Commons — YouTube, made searchable",
+  title: "Transcript Commons — Search video transcripts",
   description:
-    "A free, public, agent-readable library of timestamped YouTube transcripts.",
+    "Read and search free, timestamped YouTube transcripts. If a video is missing, create its transcript on your own computer.",
   alternates: { canonical: CANONICAL_SITE_ORIGIN },
 };
 
@@ -48,25 +48,22 @@ export default async function Home({
         </Link>
         <div className="nav-links">
           <a href="#library">Library</a>
-          <Link href="/status">Status</Link>
-          <Link href="/policies">Policies</Link>
-          <a href="/llms.txt">For agents ↗</a>
+          <a href="#how-it-works">How it works</a>
+          <Link href="/contribute">Add a transcript</Link>
         </div>
       </nav>
 
       <section className="hero" aria-labelledby="hero-title">
         <div className="hero-copy">
-          <p className="eyebrow">
-            OPEN KNOWLEDGE LAYER <span>•</span> HEALTHCARE FIRST
-          </p>
+          <p className="eyebrow">FREE PUBLIC VIDEO TRANSCRIPTS</p>
           <h1 id="hero-title">
-            YouTube,
+            Video,
             <br />
             made <em>searchable.</em>
           </h1>
           <p className="hero-description">
-            Clean, timestamped transcripts that people can read and research
-            agents can find, quote, and reason over. Free. Public. No login.
+            Find a video, read what was said, and jump back to the exact moment.
+            Every transcript is free to search and read. No account required.
           </p>
           <form className="search" action="/" role="search">
             <label className="sr-only" htmlFor="q">
@@ -77,23 +74,23 @@ export default async function Home({
               name="q"
               type="search"
               defaultValue={q}
-              placeholder="Search every transcript…"
+              placeholder="Search titles, topics, or spoken words…"
               autoComplete="off"
             />
             <button type="submit">SEARCH</button>
           </form>
-          <div className="quick-links" aria-label="Quick topic links">
-            <span>START WITH</span>
+          <div className="quick-links">
+            <span>TRY</span>
             <Link href="/?q=diabetes">Diabetes</Link>
-            <Link href="/?q=cardiology">Cardiology</Link>
-            <Link href="/?q=mental+health">Mental health</Link>
+            <Link href="/?q=insulin">Insulin</Link>
+            <Link href="/?q=screening">Screening</Link>
           </div>
         </div>
 
         <div className="hero-index" aria-label="Transcript index illustration">
           <div className="index-top">
-            <span>LIVE INDEX</span>
-            <span>{String(transcripts.length).padStart(3, "0")} RECORDS</span>
+            <span>PUBLIC LIBRARY</span>
+            <span>{String(transcripts.length).padStart(3, "0")} VIDEOS</span>
           </div>
           <div className="play-block">
             <span aria-hidden="true">▶</span>
@@ -109,22 +106,22 @@ export default async function Home({
             )}
           </div>
           <p>
-            <strong>CAPTIONS FIRST</strong>
-            <span>LOCAL ASR FALLBACK</span>
+            <strong>USE CAPTIONS FIRST</strong>
+            <span>TRANSCRIBE ONLY WHEN NEEDED</span>
           </p>
         </div>
       </section>
 
       <section className="manifesto" aria-label="Library promise">
-        <p>THE VIDEO IS THE SOURCE.</p>
-        <p>THE TRANSCRIPT MAKES IT LEGIBLE.</p>
-        <p>THE OPEN WEB MAKES IT USEFUL.</p>
+        <p>SEARCH THE WORDS.</p>
+        <p>OPEN THE TIMESTAMP.</p>
+        <p>CHECK THE ORIGINAL VIDEO.</p>
       </section>
 
       <section className="library-section" id="library">
         <div className="section-heading">
           <div>
-            <p className="eyebrow">THE PUBLIC INDEX</p>
+            <p className="eyebrow">THE LIBRARY</p>
             <h2>{query ? `Results for “${q}”` : "Latest transcripts"}</h2>
           </div>
           <div className="stats" aria-label="Library statistics">
@@ -135,7 +132,7 @@ export default async function Home({
               <strong>{totalHours}</strong> hours
             </span>
             <span>
-              <strong>100%</strong> open
+              <strong>Free</strong> access
             </span>
           </div>
         </div>
@@ -180,20 +177,16 @@ export default async function Home({
           </div>
         ) : (
           <div className="empty-state">
-            <div className="empty-number">{query ? "0" : "01"}</div>
+            <div className="empty-number">0</div>
             <div>
-              <p className="eyebrow">
-                {query ? "NO MATCHES YET" : "INDEX READY"}
-              </p>
-              <h3>
-                {query
-                  ? "This search will grow with the library."
-                  : "Send the first healthcare URLs."}
-              </h3>
+              <p className="eyebrow">NO MATCH YET</p>
+              <h3>That video or topic is not in the library.</h3>
               <p>
-                {query
-                  ? "Try a broader medical topic, channel name, or phrase."
-                  : "The ingestion pipeline is ready to reuse existing captions or transcribe audio locally when captions are missing."}
+                Try a shorter search, or{" "}
+                <Link className="text-link" href="/contribute">
+                  create the missing transcript on your computer
+                </Link>
+                .
               </p>
             </div>
           </div>
@@ -202,71 +195,94 @@ export default async function Home({
 
       <section className="process-section" id="how-it-works">
         <div className="process-intro">
-          <p className="eyebrow">FROM VIDEO TO OPEN TEXT</p>
-          <h2>Two paths in. One clean record out.</h2>
+          <p className="eyebrow">HOW IT WORKS</p>
+          <h2>A video becomes useful text.</h2>
           <p>
-            Every page keeps the source video attached to its words. Timestamps,
-            provenance, and machine-readable formats are part of the record—not
-            an afterthought.
+            The library tries the easiest method first and always keeps the
+            finished transcript connected to the original video.
           </p>
         </div>
         <ol className="process-list">
           <li>
             <span>01</span>
             <div>
-              <h3>Use captions</h3>
+              <h3>Use available captions</h3>
               <p>
-                Fetch creator or auto-generated captions and normalize overlapping
-                cues into readable, timestamped segments.
+                If the video already has captions, they are cleaned and saved
+                with readable timestamps.
               </p>
             </div>
-            <b>FAST PATH</b>
           </li>
           <li>
             <span>02</span>
             <div>
-              <h3>Transcribe locally</h3>
+              <h3>Fill the gap locally</h3>
               <p>
-                If captions are absent, download audio and run MLX Whisper or
-                whisper.cpp on your Mac. Audio never needs a paid cloud model.
+                If captions are missing, anyone can run a free speech-to-text
+                model on their own computer. The work is not tied to one person
+                or one machine.
               </p>
             </div>
-            <b>FALLBACK</b>
           </li>
           <li>
             <span>03</span>
             <div>
-              <h3>Publish for agents</h3>
+              <h3>Save it for later</h3>
               <p>
-                Render semantic HTML, plain text, JSON, canonical URLs, structured
-                data, and sitemaps so web research tools can discover the words.
+                The result stays in the project, where it can be searched,
+                checked, reused, or contributed to the public library.
               </p>
             </div>
-            <b>OPEN WEB</b>
           </li>
         </ol>
       </section>
 
+      <section className="local-section">
+        <div>
+          <p className="eyebrow">VIDEO NOT FOUND?</p>
+          <h2>Add it from your own computer.</h2>
+          <p>
+            Download the open-source project, give it a YouTube URL, and let it
+            use captions or local transcription. Nothing is automatically
+            uploaded. You decide whether the saved result stays private or is
+            shared with the library.
+          </p>
+          <div className="local-actions">
+            <Link className="primary-action" href="/contribute">
+              SEE THE SIMPLE GUIDE →
+            </Link>
+            <a
+              className="secondary-action"
+              href="https://github.com/akshhkaushik/transcript-commons"
+            >
+              VIEW THE PROJECT ↗
+            </a>
+          </div>
+        </div>
+        <div className="command-card" aria-label="Example local command">
+          <span>ONE VIDEO</span>
+          <code>python scripts/ingest.py &quot;YOUTUBE_URL&quot;</code>
+          <p>Captions first. Local transcription only when needed.</p>
+        </div>
+      </section>
+
       <section className="agent-section">
-        <div className="agent-kicker">AGENT-READABLE BY DESIGN</div>
+        <div className="agent-kicker">USEFUL TO PEOPLE AND AI TOOLS</div>
         <h2>
-          No player scraping.
+          Read the words.
           <br />
-          No code required.
+          Check the source.
           <br />
-          <em>Just a URL.</em>
+          <em>Share the page.</em>
         </h2>
         <p>
-          Each transcript is fully server-rendered and available as clean HTML,
-          text, and JSON. ChatGPT, Claude, search engines, and ordinary browsers
-          all get the same open source record.
+          Each public page contains the complete transcript, timestamps, and a
+          link to the original video. It works in an ordinary browser and can
+          also be read by web research tools.
         </p>
         <div className="format-links">
-          <a href="/llms.txt">LLMS.TXT ↗</a>
-          <a href="/api/transcripts">JSON INDEX ↗</a>
-          <a href="/api/search?q=diabetes">SEARCH API ↗</a>
-          <a href="/data/library.json">STATIC DATA ↗</a>
-          <a href="/sitemap.xml">SITEMAP ↗</a>
+          <a href="/llms.txt">GUIDE FOR AI TOOLS ↗</a>
+          <a href="/api/transcripts">PUBLIC DATA ↗</a>
         </div>
       </section>
 
@@ -277,10 +293,10 @@ export default async function Home({
           </span>
           <span>TRANSCRIPT COMMONS</span>
         </Link>
-        <p>Free transcripts for humans and research agents.</p>
+        <p>Free video transcripts that stay linked to their source.</p>
         <p>
-          <Link href="/status">Status</Link> ·{" "}
-          <Link href="/policies">Corrections and rights</Link>
+          <Link href="/contribute">Add a transcript</Link> ·{" "}
+          <Link href="/policies">Corrections or removal</Link>
         </p>
       </footer>
     </main>

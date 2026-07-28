@@ -18,18 +18,18 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     metadataBase: new URL(origin),
     title: {
-      default: "Transcript Commons — YouTube, made searchable",
+      default: "Transcript Commons — Search video transcripts",
       template: "%s | Transcript Commons",
     },
     description:
-      "A free, public, agent-readable library of timestamped YouTube transcripts.",
+      "A free library of searchable, timestamped YouTube video transcripts.",
     applicationName: "Transcript Commons",
     keywords: [
       "YouTube transcripts",
       "video transcripts",
-      "healthcare research",
-      "agent-readable",
-      "open knowledge",
+      "searchable video text",
+      "timestamped transcripts",
+      "free transcript library",
     ],
     alternates: { canonical: CANONICAL_SITE_ORIGIN },
     robots: {

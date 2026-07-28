@@ -7,9 +7,9 @@ const ISSUES_URL =
   "https://github.com/akshhkaushik/transcript-commons/issues/new/choose";
 
 export const metadata: Metadata = {
-  title: "Rights, corrections, and takedowns",
+  title: "Corrections and removal",
   description:
-    "Transcript Commons policies for source attribution, medical accuracy, corrections, privacy, and takedown requests.",
+    "How to report a transcript mistake or ask for a transcript to be removed.",
   alternates: { canonical: `${CANONICAL_SITE_ORIGIN}/policies` },
 };
 
@@ -25,18 +25,18 @@ export default function PoliciesPage() {
         </Link>
         <div className="nav-links">
           <Link href="/">Library</Link>
-          <Link href="/status">Status</Link>
-          <a href="/llms.txt">For agents ↗</a>
+          <Link href="/contribute">Add a transcript</Link>
+          <Link href="/status">Library status</Link>
         </div>
       </nav>
 
       <header className="info-hero">
-        <p className="eyebrow">PUBLIC OPERATING POLICY</p>
-        <h1>Rights, corrections, and takedowns.</h1>
+        <p className="eyebrow">HELP KEEP THE LIBRARY ACCURATE</p>
+        <h1>Corrections and removal.</h1>
         <p>
-          Transcript Commons is an independent, free research index. Every
-          transcript stays attached to its original YouTube source, publisher,
-          timestamps, and production method.
+          Transcripts can contain mistakes. Tell us what needs to change, or
+          contact us privately if you own a source and want its transcript
+          removed.
         </p>
       </header>
 
@@ -44,17 +44,12 @@ export default function PoliciesPage() {
         <section>
           <span>01</span>
           <div>
-            <h2>Source rights and attribution</h2>
+            <h2>The original video remains the source</h2>
             <p>
-              Source videos, audio, thumbnails, names, and underlying media
-              remain the property of their respective publishers. Transcript
-              Commons does not claim ownership of source media and is not
-              affiliated with YouTube or the indexed channels.
-            </p>
-            <p>
-              Each record links directly to the source video and identifies
-              whether its text came from creator captions, automatic captions,
-              or local speech recognition.
+              The video and its media belong to their original publisher.
+              Transcript Commons is independent from YouTube and the listed
+              channels. Every transcript links back to the original video and
+              says how its text was created.
             </p>
           </div>
         </section>
@@ -62,11 +57,11 @@ export default function PoliciesPage() {
         <section>
           <span>02</span>
           <div>
-            <h2>Corrections</h2>
+            <h2>Report a transcript mistake</h2>
             <p>
-              Report transcription errors with the transcript URL, timestamp,
-              incorrect text, and proposed correction. Medical names, dosages,
-              numerical claims, and speaker identity receive priority.
+              Send the transcript link, timestamp, incorrect words, and the
+              correct words. Please check names, numbers, and important claims
+              against the original video first.
             </p>
             <p>
               <a className="text-link" href={ISSUES_URL}>
@@ -79,12 +74,11 @@ export default function PoliciesPage() {
         <section>
           <span>03</span>
           <div>
-            <h2>Takedowns and publisher requests</h2>
+            <h2>Ask for removal</h2>
             <p>
-              Rights holders and source publishers may request removal or
-              amendment. Include the source URL, the transcript URL, your
-              relationship to the work, and the requested action. Do not put
-              confidential personal information in a public GitHub issue.
+              If you own or publish the source, email the source link,
+              transcript link, your relationship to the video, and the action
+              you want. Use email so private information is not posted publicly.
             </p>
             <p>
               <a className="text-link" href={`mailto:${CONTACT_EMAIL}`}>
@@ -97,41 +91,12 @@ export default function PoliciesPage() {
         <section>
           <span>04</span>
           <div>
-            <h2>Medical accuracy</h2>
+            <h2>Check important information</h2>
             <p>
-              A transcript is a representation of what a source says—not an
-              endorsement or verification of its medical claims. Automated
-              captions and speech recognition can misstate names, medication,
-              units, and numbers. Review the linked source and qualified
-              evidence before making a health decision.
-            </p>
-          </div>
-        </section>
-
-        <section>
-          <span>05</span>
-          <div>
-            <h2>Privacy and access</h2>
-            <p>
-              Reading the library requires no account, payment, or
-              subscription. The application does not provide user profiles or
-              sell personal data. Hosting providers may retain standard
-              security and access logs under their own platform policies.
-            </p>
-          </div>
-        </section>
-
-        <section>
-          <span>06</span>
-          <div>
-            <h2>Contact</h2>
-            <p>
-              Public technical and correction requests belong in the GitHub
-              issue tracker. Private rights or takedown requests can be sent to{" "}
-              <a className="text-link" href={`mailto:${CONTACT_EMAIL}`}>
-                {CONTACT_EMAIL}
-              </a>
-              .
+              Captions and speech-to-text can mishear words. A transcript shows
+              what the source appears to say; it does not prove that the claim
+              is correct. Use the timestamp to check the original video before
+              relying on important information.
             </p>
           </div>
         </section>
@@ -144,8 +109,8 @@ export default function PoliciesPage() {
           </span>
           <span>TRANSCRIPT COMMONS</span>
         </Link>
-        <p>Transparent provenance. Correctable text. Open access.</p>
-        <Link href="/status">Library status →</Link>
+        <p>Free to read. Easy to correct. Linked to the source.</p>
+        <Link href="/">Search the library →</Link>
       </footer>
     </main>
   );
