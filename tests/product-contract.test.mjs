@@ -38,6 +38,7 @@ test("wires agent search to the canonical Registry", async () => {
   assert.match(api, /jsonObjectUrl/);
   assert.match(search, /transcript-registry\.vercel\.app/);
   assert.match(search, /\/search\.json/);
+  assert.match(search, /new URL\(result\.transcript, REGISTRY_ORIGIN\)/);
   assert.match(schema, /creator-captions/);
   assert.match(status, /Every queued video is published/);
   assert.match(health, /publishedCount/);

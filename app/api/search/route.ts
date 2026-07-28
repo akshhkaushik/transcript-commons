@@ -18,13 +18,27 @@ export async function GET(request: Request) {
       headers: { accept: "application/json" },
       next: { revalidate: 60 },
     });
-    const body = await response.text();
-    return new Response(body, {
+    const payload = (await response.json()) as {
+      results?: Array<{ transcript?: string; text?: string }>;
+      discovery?: { statusUrl?: string } | null;
+    };
+    for (const result of payload.results ?? []) {
+      if (result.transcript) {
+        result.transcript = new URL(result.transcript, REGISTRY_ORIGIN).toString();
+      }
+      if (result.text) {
+        result.text = new URL(result.text, REGISTRY_ORIGIN).toString();
+      }
+    }
+    if (payload.discovery?.statusUrl) {
+      payload.discovery.statusUrl = new URL(
+        payload.discovery.statusUrl,
+        REGISTRY_ORIGIN,
+      ).toString();
+    }
+    return Response.json(payload, {
       status: response.status,
       headers: {
-        "content-type":
-          response.headers.get("content-type") ??
-          "application/json; charset=utf-8",
         "cache-control":
           response.headers.get("cache-control") ??
           "public, max-age=60, s-maxage=60",
