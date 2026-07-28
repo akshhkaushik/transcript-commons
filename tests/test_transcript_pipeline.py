@@ -1,9 +1,12 @@
 from __future__ import annotations
 
 import json
+import sys
 import tempfile
 import unittest
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 
 from scripts.build_public_data import (
     build_search_index,
@@ -12,6 +15,8 @@ from scripts.build_public_data import (
     tokenize,
 )
 from scripts.ingest_batch import load_urls, write_summary
+from scripts.ingest import audio_fallback_allowed
+from scripts.registry_api import registry_record
 from scripts.review_queue import mark_reviewed, review_items
 from scripts.submit_indexnow import canonical_urls, payload
 from scripts.transcript_pipeline import (
@@ -24,6 +29,36 @@ from scripts.transcript_pipeline import (
 
 
 class TranscriptPipelineTests(unittest.TestCase):
+    def test_audio_fallback_defaults_to_permissioned_sources(self) -> None:
+        self.assertEqual(
+            audio_fallback_allowed(
+                {"license": "Creative Commons Attribution"},
+                "permissioned",
+            ),
+            (True, "creative-commons"),
+        )
+        self.assertEqual(
+            audio_fallback_allowed({"license": "Standard YouTube License"}, "permissioned"),
+            (False, "permission-required"),
+        )
+
+    def test_commons_record_maps_to_registry_contract(self) -> None:
+        mapped = registry_record(
+            {
+                "videoId": "sI-1ON2jgr8",
+                "title": "Example",
+                "channel": "Example Channel",
+                "sourceUrl": "https://www.youtube.com/watch?v=sI-1ON2jgr8",
+                "transcriptSource": "auto-captions",
+                "segments": [
+                    {"start": 2, "duration": 3, "text": "A useful sentence."}
+                ],
+            }
+        )
+        self.assertEqual(mapped["transcriptSource"], "automatic-captions")
+        self.assertEqual(mapped["segments"][0]["end"], 5)
+        self.assertEqual(mapped["transcriptText"], "A useful sentence.")
+
     def test_youtube_video_id_variants(self) -> None:
         expected = "sI-1ON2jgr8"
         self.assertEqual(

@@ -7,6 +7,8 @@ import argparse
 import json
 import os
 import re
+import urllib.parse
+import urllib.request
 from pathlib import Path
 from typing import Any
 
@@ -48,6 +50,42 @@ def discover(
     return list(payload.get("entries") or [payload])
 
 
+def discover_with_youtube_api(
+    query: str,
+    *,
+    limit: int,
+    api_key: str,
+    creative_commons_only: bool,
+) -> list[dict[str, Any]]:
+    parameters = {
+        "part": "snippet",
+        "type": "video",
+        "q": query,
+        "maxResults": min(limit, 50),
+        "videoCaption": "closedCaption",
+        "safeSearch": "moderate",
+        "key": api_key,
+    }
+    if creative_commons_only:
+        parameters["videoLicense"] = "creativeCommon"
+    request = urllib.request.Request(
+        "https://www.googleapis.com/youtube/v3/search?"
+        + urllib.parse.urlencode(parameters),
+        headers={"user-agent": "transcript-commons/2.0"},
+    )
+    with urllib.request.urlopen(request, timeout=60) as response:
+        payload = json.loads(response.read().decode("utf-8"))
+    return [
+        {
+            "id": item.get("id", {}).get("videoId"),
+            "title": item.get("snippet", {}).get("title"),
+            "channel": item.get("snippet", {}).get("channelTitle"),
+        }
+        for item in payload.get("items", [])
+        if item.get("id", {}).get("videoId")
+    ]
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         description="Find healthcare videos or expand a playlist/channel into a queue."
@@ -63,16 +101,37 @@ def main() -> int:
     parser.add_argument("--include-published", action="store_true")
     parser.add_argument("--cookies-from-browser")
     parser.add_argument("--yt-dlp", default=os.environ.get("YT_DLP_BINARY"))
+    parser.add_argument(
+        "--youtube-api-key",
+        default=os.environ.get("YOUTUBE_API_KEY"),
+    )
+    parser.add_argument(
+        "--license-mode",
+        choices=["creative-common", "any"],
+        default=os.environ.get("DISCOVERY_LICENSE_MODE", "creative-common"),
+    )
     args = parser.parse_args()
 
     yt_dlp = find_binary("yt-dlp", args.yt_dlp)
-    target = f"ytsearch{args.limit}:{args.query}" if args.query else str(args.url)
-    entries = discover(
-        yt_dlp,
-        target,
-        limit=args.limit,
-        cookies_from_browser=args.cookies_from_browser,
-    )
+    if args.query and args.youtube_api_key:
+        entries = discover_with_youtube_api(
+            args.query,
+            limit=args.limit,
+            api_key=args.youtube_api_key,
+            creative_commons_only=args.license_mode == "creative-common",
+        )
+    else:
+        target = (
+            f"ytsearch{args.limit}:{args.query}"
+            if args.query
+            else str(args.url)
+        )
+        entries = discover(
+            yt_dlp,
+            target,
+            limit=args.limit,
+            cookies_from_browser=args.cookies_from_browser,
+        )
     published = {str(record.get("videoId")) for record in load_records()}
     allowed_channels = {value.casefold() for value in args.channel}
 

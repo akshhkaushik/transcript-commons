@@ -1,50 +1,47 @@
-import { getTranscripts } from "../../transcript-data";
-import { excerpt, searchTranscripts } from "../../transcript-utils";
-import {
-  CANONICAL_SITE_ORIGIN,
-  canonicalHeaders,
-} from "../../site-url";
+const REGISTRY_ORIGIN = (
+  process.env.REGISTRY_URL ?? "https://transcript-registry.vercel.app"
+).replace(/\/$/, "");
 
 export async function GET(request: Request) {
-  const url = new URL(request.url);
-  const query = (url.searchParams.get("q") ?? "").trim();
-  const limit = Math.min(
-    100,
-    Math.max(1, Number.parseInt(url.searchParams.get("limit") ?? "25", 10) || 25),
-  );
-  const origin = CANONICAL_SITE_ORIGIN;
-  const hits = searchTranscripts(getTranscripts(), query).slice(0, limit);
+  const incoming = new URL(request.url);
+  const upstream = new URL("/search.json", REGISTRY_ORIGIN);
 
-  return Response.json(
-    {
-      query,
-      count: hits.length,
-      algorithm: query ? "BM25" : "latest",
-      results: hits.map(({ transcript, match, score, matchedTerms }) => ({
-        videoId: transcript.videoId,
-        title: transcript.title,
-        channel: transcript.channel,
-        topics: transcript.topics,
-        score: score ?? null,
-        matchedTerms: matchedTerms ?? [],
-        transcriptUrl: `${origin}/videos/${transcript.videoId}`,
-        plainTextUrl: `${origin}/videos/${transcript.videoId}/transcript.txt`,
-        jsonObjectUrl: `${origin}/data/transcripts/${transcript.videoId}.json`,
-        textObjectUrl: `${origin}/data/transcripts/${transcript.videoId}.txt`,
-        sourceUrl: transcript.sourceUrl,
-        match: match
-          ? {
-              startSeconds: match.start,
-              text: excerpt(match.text, query, 320),
-            }
-          : null,
-      })),
-    },
-    {
+  for (const key of ["q", "limit", "discover"]) {
+    const value = incoming.searchParams.get(key);
+    if (value !== null) {
+      upstream.searchParams.set(key, value);
+    }
+  }
+
+  try {
+    const response = await fetch(upstream, {
+      headers: { accept: "application/json" },
+      next: { revalidate: 60 },
+    });
+    const body = await response.text();
+    return new Response(body, {
+      status: response.status,
       headers: {
-        "cache-control": "public, max-age=60, s-maxage=600",
-        ...canonicalHeaders(`/api/search?q=${encodeURIComponent(query)}`, request.url),
+        "content-type":
+          response.headers.get("content-type") ??
+          "application/json; charset=utf-8",
+        "cache-control":
+          response.headers.get("cache-control") ??
+          "public, max-age=60, s-maxage=60",
+        link: `<${upstream}>; rel="canonical"`,
+        "x-transcript-registry": REGISTRY_ORIGIN,
       },
-    },
-  );
+    });
+  } catch {
+    return Response.json(
+      {
+        error: "Transcript Registry is temporarily unavailable",
+        registry: REGISTRY_ORIGIN,
+      },
+      {
+        status: 503,
+        headers: { "cache-control": "no-store" },
+      },
+    );
+  }
 }

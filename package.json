@@ -19,6 +19,10 @@
     "generate:data": "python3 scripts/build_public_data.py",
     "check": "npm test && npm run lint && npm run build:vercel",
     "lint": "node node_modules/eslint/bin/eslint.js . --ignore-pattern dist --ignore-pattern .next --ignore-pattern .venv",
+    "worker:registry": "python3 scripts/registry_worker.py",
+    "worker:check": "python3 scripts/registry_worker.py --check",
+    "publish:registry": "python3 scripts/publish_registry.py",
+    "seed:topics": "python3 scripts/seed_registry_topics.py",
     "db:generate": "node node_modules/drizzle-kit/bin.cjs generate"
   },
   "dependencies": {

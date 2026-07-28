@@ -1,0 +1,161 @@
+# Science and mathematics
+algebra
+calculus
+linear algebra
+probability
+statistics
+number theory
+geometry
+mathematical proofs
+physics
+quantum mechanics
+relativity
+astrophysics
+astronomy
+cosmology
+chemistry
+organic chemistry
+materials science
+biology
+genetics
+evolution
+ecology
+neuroscience
+earth science
+geology
+oceanography
+climate science
+environmental science
+
+# Computing and engineering
+computer science
+data structures
+algorithms
+competitive programming
+software engineering
+system design
+distributed systems
+operating systems
+computer networks
+databases
+web development
+mobile development
+cloud computing
+devops
+site reliability engineering
+cybersecurity
+cryptography
+artificial intelligence
+machine learning
+deep learning
+natural language processing
+computer vision
+robotics
+data science
+python programming
+javascript programming
+typescript programming
+java programming
+c plus plus programming
+rust programming
+go programming
+electrical engineering
+electronics
+mechanical engineering
+civil engineering
+chemical engineering
+aerospace engineering
+biomedical engineering
+renewable energy
+
+# Health and medicine
+human anatomy
+physiology
+public health
+epidemiology
+nutrition
+fitness
+mental health
+psychology
+psychiatry
+cardiology
+neurology
+oncology
+diabetes
+infectious disease
+immunology
+pharmacology
+surgery
+pediatrics
+womens health
+emergency medicine
+medical research
+healthcare policy
+
+# Business, economics, and law
+economics
+microeconomics
+macroeconomics
+finance
+accounting
+investing
+entrepreneurship
+startups
+product management
+marketing
+sales
+operations management
+supply chain
+business strategy
+leadership
+organizational behavior
+law
+constitutional law
+international law
+business law
+intellectual property
+public policy
+
+# Humanities and society
+world history
+ancient history
+modern history
+political science
+international relations
+sociology
+anthropology
+philosophy
+ethics
+logic
+religious studies
+linguistics
+literature
+writing
+journalism
+media studies
+education
+geography
+urban planning
+architecture
+
+# Arts, culture, and practical knowledge
+music theory
+music production
+film studies
+photography
+graphic design
+user experience design
+painting
+drawing
+animation
+cooking
+baking
+gardening
+agriculture
+woodworking
+automotive repair
+home repair
+personal productivity
+career development
+communication skills
+language learning
